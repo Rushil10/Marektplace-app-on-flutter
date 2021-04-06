@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "324219535589",
+    "project_id": "grocy-9ba9a",
+    "storage_bucket": "grocy-9ba9a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:324219535589:android:7878e5c97fe7422a41540c",
+        "android_client_info": {
+          "package_name": "com.techstart.grocy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "324219535589-sv1jn50acdqober00lgh2oncjrp2cfji.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtZN8A1_zB9g567WN-REwq2xh_kmqjkwA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "324219535589-sv1jn50acdqober00lgh2oncjrp2cfji.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
