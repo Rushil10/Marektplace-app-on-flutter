@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-Uri url = Uri.parse('https://72b925d6918b.ngrok.io');
+Uri url = Uri.parse('https://aa89984232c0.ngrok.io');
 var url2 = 'https://localhost:3000';
 
 final storage = new FlutterSecureStorage();
@@ -50,11 +50,20 @@ class ShopApi {
 
   Future getOutForDeliveryProducts() async {
     var token = await storage.read(key: 'shop_token');
-    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
-    var shop_id = decodedToken['shop_id'];
-    print(decodedToken);
     print(token);
     http.Response response = await http.get(Uri.parse('$url/orders/outForDelivery'),
+      headers: {"Authorization": 'Bearer $token'},
+    );
+    //print(response.body);
+    var decodedData = jsonDecode(response.body);
+    print(decodedData);
+    return decodedData;
+  }
+
+  Future getDeliveredProducts() async {
+    var token = await storage.read(key: 'shop_token');
+    print(token);
+    http.Response response = await http.get(Uri.parse('$url/orders/delivered'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);

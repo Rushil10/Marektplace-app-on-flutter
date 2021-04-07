@@ -52,7 +52,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         ),
         centerTitle: true,
       ),
-      body: SafeArea(
+      body: SingleChildScrollView(
         child:Container(
           margin: EdgeInsets.all(5.0),
           child: Column(
@@ -169,6 +169,100 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                   ),
                 ),
               ),
+              !loading ? ListView.builder(
+                scrollDirection: Axis.vertical,
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: orders.length,
+                  itemBuilder: (BuildContext context,int index) {
+                  var image = orders[index]['product_image'];
+                  var qty = orders[index]['quantity'];
+                  var type = orders[index]['product_type'];
+                  var price = orders[index]['product_price'];
+                  var total = orders[index]['total'];
+                    return Container(
+                      margin: EdgeInsets.only(left:5,top:15,right:5),
+                      height: size.height/4.005,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 1.25
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(7.5))
+                      ),
+                      child: Column(
+                        //mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.all(5.0),
+                                child: Container(
+                                  height:size.height/12.5,
+                                  width: size.height/12.5,
+                                  child: Image.network(image,fit: BoxFit.contain,),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 7.5,
+                              ),
+                              Text(
+                                orders[index]['product_name'],
+                                style: TextStyle(
+                                  fontSize: 19
+                                ),
+                              )
+                            ],
+                          ),
+                          Padding(padding: EdgeInsets.all(5.0),
+                            child: Container(
+                              child: Text(
+                                'Quantity : $qty',
+                                style: TextStyle(
+                                  fontSize: 16.5
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(5.0),
+                            child: Container(
+                              child: Text(
+                                'Price : $price',
+                                style: TextStyle(
+                                    fontSize: 16.5
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(5.0),
+                            child: Container(
+                              child: Text(
+                                'Total : $total',
+                                style: TextStyle(
+                                    fontSize: 16.5
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(5.0),
+                            child: Container(
+                              child: Text(
+                                'Type : $type',
+                                style: TextStyle(
+                                    fontSize: 16.5
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    );
+                  }
+              ) : Text(
+                'Loading'
+              )
             ],
           ),
         ),
