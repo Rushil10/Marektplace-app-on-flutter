@@ -1,18 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grocy/Screens/ShopScreens/OrderDetailsPage.dart';
 import 'package:grocy/consumer_api.dart';
 
-class OutForDelivery extends StatefulWidget {
+class CurrentOrders extends StatefulWidget {
   @override
-  _OutForDeliveryState createState() => _OutForDeliveryState();
+  _CurrentOrdersState createState() => _CurrentOrdersState();
 }
 
-class _OutForDeliveryState extends State<OutForDelivery> {
+class _CurrentOrdersState extends State<CurrentOrders> {
+  var info;
+  var loading = true;
   ShopApi shop = new ShopApi();
-  var loading=true;
-  var info = [];
-  @override
+
   void initState() {
     // TODO: implement initState
     print("HEllo");
@@ -24,7 +23,7 @@ class _OutForDeliveryState extends State<OutForDelivery> {
     setState(() {
       loading=true;
     });
-    var data = await shop.getOutForDeliveryProducts();
+    var data = await shop.getOrderedProducts();
     if(data.length>0) {
       setState(() {
         info=data;
@@ -37,7 +36,7 @@ class _OutForDeliveryState extends State<OutForDelivery> {
     }
   }
 
-  void sendToDelivered(index,id) async{
+  void sendToOutForDelivery(index,id) async{
     await shop.updateDeliveryStatus(id);
     var prevList = info;
     prevList.removeAt(index);
@@ -45,28 +44,35 @@ class _OutForDeliveryState extends State<OutForDelivery> {
       info=prevList;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
+      appBar: AppBar(
+        title: Text(
+          'Current Orders'
+        ),
+        centerTitle: true,
+      ),
+      body:SafeArea(
         child: Column(
           children: [
             Expanded(
-              child:loading ?
+              child:  loading ?
               Center(
                   child : new CircularProgressIndicator(
                     valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
                   )
               ) : info.length!=0 ?
               ListView.builder(
-                itemCount: info.length,
+                  itemCount: info.length,
                   itemBuilder: (BuildContext context,int index) {
-                  var price = info[index]["order_cart_total"].toString();
-                  var pm = info[index]['payment_mode'].toString();
-                  var ps = info[index]['payment_status'].toString();
-                  var cc = info[index]['consumer_contact'].toString();
-                  var ad = info[index]['consumer_address'].toString();
+                    var price = info[index]["order_cart_total"].toString();
+                    var pm = info[index]['payment_mode'].toString();
+                    var ps = info[index]['payment_status'].toString();
+                    var cc = info[index]['consumer_contact'].toString();
+                    var ad = info[index]['consumer_address'].toString();
                     return GestureDetector(
                       child: Container(
                         //height: 525,
@@ -186,7 +192,7 @@ class _OutForDeliveryState extends State<OutForDelivery> {
                                           height: 41,
                                           child: Center(
                                             child: Text(
-                                              'Delivered',
+                                              'Out For Delivery',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                   fontSize: 19
@@ -195,7 +201,7 @@ class _OutForDeliveryState extends State<OutForDelivery> {
                                           )
                                       ),
                                       onTap: () async {
-                                        await sendToDelivered(index,info[index]["order_cart_id"].toString());
+                                        await sendToOutForDelivery(index,info[index]["order_cart_id"].toString());
                                       },
                                     )
                                   ],
@@ -209,8 +215,8 @@ class _OutForDeliveryState extends State<OutForDelivery> {
                           return OrderDetailsPage(
                             info: info[index],
                             index: index,
-                            changeDeliveryStatus: sendToDelivered,
-                            bt: 'Delivered',
+                            changeDeliveryStatus: sendToOutForDelivery,
+                            bt: 'Out For Delivery',
                           );
                         }));
                       },
@@ -223,8 +229,8 @@ class _OutForDeliveryState extends State<OutForDelivery> {
               ),
             ),
           ],
-        ),
-      ),
+        )
+      )
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grocy/Screens/ShopScreens/AddProduct.dart';
 import 'package:grocy/Screens/ShopScreens/Components/ProductTile.dart';
+import 'package:grocy/Screens/ShopScreens/CurrentOrders.dart';
 import 'package:grocy/Screens/ShopScreens/DeliveryDetailsScreen.dart';
 import 'package:grocy/Screens/ShopScreens/Profile.dart';
 
@@ -117,7 +118,7 @@ class _BottomTabsState extends State<BottomTabs> {
                     navigatorKey: secondTabNavKey,
                     builder: (context) {
                       return CupertinoPageScaffold(
-                          child: ShopOwnerProfile()
+                          child: CurrentOrders()
                       );
                     });
               case 2:

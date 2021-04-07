@@ -23,12 +23,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9dca2055-a96e-42ca-b6a4-d3cb23a2a446" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/ShopScreens/BottomTabs.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ShopScreens/BottomTabs.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/ShopScreens/Delivered.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ShopScreens/Delivered.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/ShopScreens/OrderDetailsPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ShopScreens/OrderDetailsPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/ShopScreens/OutForDelivery.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ShopScreens/OutForDelivery.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/consumer_api.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/consumer_api.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,6 +53,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -69,11 +69,73 @@
       <recent name="C:\Users\rushi\OneDrive\Desktop\Mn Git Linked\Grocy\android\app" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Flutter.main.dart">
     <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
       <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
       <method v="2" />
     </configuration>
+    <configuration name="C:/Users/rushi/OneDrive/Desktop/new_grocy [cleam]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="cleam" />
+          </list>
+        </option>
+        <option name="vmOptions" value="" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="C:/Users/rushi/OneDrive/Desktop/new_grocy [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" value="" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="C:/Users/rushi/OneDrive/Desktop/new_grocy" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--stop" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" value="" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.C:/Users/rushi/OneDrive/Desktop/new_grocy [cleam]" />
+        <item itemvalue="Gradle.C:/Users/rushi/OneDrive/Desktop/new_grocy" />
+        <item itemvalue="Gradle.C:/Users/rushi/OneDrive/Desktop/new_grocy [clean]" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -121,26 +183,26 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="361" y="159" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1616392985685" />
-    <state width="1491" height="186" key="GridCell.Tab.0.bottom" timestamp="1617772457988">
+    <state width="1491" height="186" key="GridCell.Tab.0.bottom" timestamp="1617812447119">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1491" height="186" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1617772457988" />
-    <state width="1491" height="186" key="GridCell.Tab.0.center" timestamp="1617772457988">
+    <state width="1491" height="186" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1617812447119" />
+    <state width="1491" height="186" key="GridCell.Tab.0.center" timestamp="1617812447119">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1491" height="186" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1617772457988" />
-    <state width="1491" height="186" key="GridCell.Tab.0.left" timestamp="1617772457988">
+    <state width="1491" height="186" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1617812447119" />
+    <state width="1491" height="186" key="GridCell.Tab.0.left" timestamp="1617812447119">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1491" height="186" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1617772457988" />
-    <state width="1491" height="186" key="GridCell.Tab.0.right" timestamp="1617772457988">
+    <state width="1491" height="186" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1617812447119" />
+    <state width="1491" height="186" key="GridCell.Tab.0.right" timestamp="1617812447119">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1491" height="186" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1617772457988" />
-    <state x="276" y="155" key="IDE.errors.dialog" timestamp="1614849299081">
+    <state width="1491" height="186" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1617812447119" />
+    <state x="276" y="155" key="IDE.errors.dialog" timestamp="1617806724013">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="276" y="155" key="IDE.errors.dialog/0.0.1536.824@0.0.1536.824" timestamp="1614849299081" />
+    <state x="276" y="155" key="IDE.errors.dialog/0.0.1536.824@0.0.1536.824" timestamp="1617806724013" />
     <state x="90" y="49" key="SettingsEditor" timestamp="1616392989782">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

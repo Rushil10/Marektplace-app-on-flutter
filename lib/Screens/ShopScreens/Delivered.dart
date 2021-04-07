@@ -35,6 +35,16 @@ class _DeliveredState extends State<Delivered> {
       });
     }
   }
+
+  void sendToPending(index,id) async{
+    await shop.updateDeliveryStatus(id);
+    var prevList = info;
+    prevList.removeAt(index);
+    setState(() {
+      info=prevList;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -164,6 +174,32 @@ class _DeliveredState extends State<Delivered> {
                                     ),
                                   ),
                                 ),
+                                SizedBox(
+                                  height: 9,
+                                ),
+                                Row(
+                                  children: [
+                                    GestureDetector(
+                                      child: Container(
+                                          color: Colors.green,
+                                          width:(size.width-10)-12,
+                                          height: 41,
+                                          child: Center(
+                                            child: Text(
+                                              'Not Yet Dispatched',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontSize: 19
+                                              ),
+                                            ),
+                                          )
+                                      ),
+                                      onTap: () async {
+                                        await sendToPending(index,info[index]["order_cart_id"].toString());
+                                      },
+                                    )
+                                  ],
+                                )
                               ],
                             ),
                           )
@@ -172,6 +208,9 @@ class _DeliveredState extends State<Delivered> {
                         Navigator.push(context, MaterialPageRoute(builder: (context) {
                           return OrderDetailsPage(
                             info: info[index],
+                            index: index,
+                            changeDeliveryStatus: sendToPending,
+                            bt: 'Not Yet Dispatched',
                           );
                         }));
                       },

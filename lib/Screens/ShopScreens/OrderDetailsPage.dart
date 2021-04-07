@@ -5,7 +5,10 @@ import 'package:grocy/consumer_api.dart';
 
 class OrderDetailsPage extends StatefulWidget {
   final info;
-  OrderDetailsPage({this.info});
+  final Function changeDeliveryStatus;
+  final index;
+  final bt;
+  OrderDetailsPage({this.info,this.changeDeliveryStatus,this.index,this.bt});
   @override
   _OrderDetailsPageState createState() => _OrderDetailsPageState();
 }
@@ -36,6 +39,17 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
       });
     }
   }
+  
+  String renderText(ds){
+    print(ds);
+    if(ds=='pending'){
+      return 'Out For Delivery';
+    } else if(ds == 'Out For Delivery') {
+      return 'Delivered';
+    } else {
+      return 'Not Yet Dispatched';
+    }
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -45,6 +59,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     var cc = widget.info['consumer_contact'].toString();
     var ad = widget.info['consumer_address'].toString();
     var email = widget.info['consumer_email'].toString();
+    var deliveryStatus = widget.info['delivery_status'].toString();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -262,6 +277,33 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                   }
               ) : Text(
                 'Loading'
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              !loading ? GestureDetector(
+                child: Container(
+                  height: 45,
+                  width: size.width,
+                  color: Colors.green,
+                  child: Center(
+                    child: Text(
+                      widget.bt,
+                      style: TextStyle(
+                          fontSize: 19
+                      ),
+                    ),
+                  ),
+                ),
+                onTap: () async {
+                  await widget.changeDeliveryStatus(widget.index,widget.info['order_cart_id'].toString());
+                },
+              ) :
+              Text(
+                ''
+              ),
+              SizedBox(
+                height: 25,
               )
             ],
           ),
