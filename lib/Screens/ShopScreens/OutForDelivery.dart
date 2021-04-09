@@ -218,8 +218,14 @@ class _OutForDeliveryState extends State<OutForDelivery> {
                   }
               )
                   :
-              Text(
-                  'No Data'
+              Center(
+                child: Text(
+                  'No Orders Out in Delivery',
+                  style: TextStyle(
+                      fontSize: 19
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ],

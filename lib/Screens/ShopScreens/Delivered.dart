@@ -218,9 +218,15 @@ class _DeliveredState extends State<Delivered> {
                   }
               )
                   :
-              Text(
-                  'No Data'
-              ),
+              Center(
+                child: Text(
+                    'No Orders Delivered !',
+                  style: TextStyle(
+                    fontSize: 19
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              )
             ),
           ],
         ),

@@ -58,6 +58,12 @@ class _AddProductState extends State<AddProduct> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Products'
+        ),
+        centerTitle: true,
+      ),
       body: StoreConnector<AppState,_ViewModel>(
         //onInit: (store) => store.dispatch(new AddProduct(allProducts)),
         converter: (Store<AppState> store) => _ViewModel.create(store),
@@ -65,6 +71,7 @@ class _AddProductState extends State<AddProduct> {
           child: SafeArea(
             child: Column(
               children: [
+                /*
                 Container(
                   child: TextButton(
                     onPressed: () async{
@@ -79,7 +86,9 @@ class _AddProductState extends State<AddProduct> {
                     ),
                   ),
                 ),
+                 */
                 Container(
+                  margin: EdgeInsets.only(top:15),
                   child: TextButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(Colors.green),

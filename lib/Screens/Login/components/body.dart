@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:grocy/Screens/ConsumerScreens/ConsumerBottomTabs.dart';
 import 'package:grocy/Screens/Location/ConsumerLocationScreen.dart';
 import 'package:grocy/Screens/ShopScreens/AddProduct.dart';
 import 'package:grocy/Screens/ShopScreens/BottomTabs.dart';
@@ -30,7 +31,7 @@ class _BodyState extends State<Body> {
     await storage.delete(key: 'shop_token');
     await storage.write(key: 'user_token', value: token);
     print(token);
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ConsumerLocationScreen()), (route) => false);
+    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ConsumerBottomTabs()), (route) => false);
   }
 
   void storeShopToken(var token) async{
