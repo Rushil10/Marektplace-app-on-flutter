@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:grocy/Screens/Location/ConsumerLocationScreen.dart';
+import 'package:grocy/Screens/ConsumerScreens/ConsumerBottomTabs.dart';
+import 'package:grocy/Screens/ConsumerScreens/ConsumerLocation.dart';
 import 'package:grocy/Screens/Login/login_screen.dart';
 import 'package:grocy/Screens/ShopScreens/AddProduct.dart';
 import 'package:grocy/Screens/ShopScreens/BottomTabs.dart';
@@ -28,13 +29,15 @@ class _BodyState extends State<Body> {
     final storage = new FlutterSecureStorage();
     String user_token = await storage.read(key: 'user_token');
     String shop_token = await storage.read(key: 'shop_token');
+    String addresses = await storage.read(key: 'addresses');
     print("Shop Token");
     print(shop_token);
     print(user_token);
-    if(user_token!=null){
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return ConsumerLocationScreen();
-      }));
+    if(user_token!=null && addresses==null){
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ConsumerLocationScreen()),(route) => false);
+    }
+    if(addresses!=null) {
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ConsumerBottomTabs()),(route) => false);
     }
     if(shop_token!=null){
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BottomTabs()),(route) => false);

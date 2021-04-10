@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:grocy/Screens/Location/ConsumerLocationScreen.dart';
+import 'package:grocy/Screens/ConsumerScreens/ConsumerLocation.dart';
 import 'package:grocy/Screens/signupFunctions.dart';
 import 'package:grocy/components/RoundedInputNumberField.dart';
 import 'package:grocy/components/rounded_button.dart';
