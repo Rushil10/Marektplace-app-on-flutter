@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:grocy/Screens/ConsumerScreens/ConsumerCart.dart';
 import 'package:grocy/Screens/ConsumerScreens/ShopProducts.dart';
 import 'package:grocy/Screens/signupFunctions.dart';
 import 'package:grocy/consumer_api.dart';
@@ -49,6 +51,20 @@ class _NearbyShopsState extends State<NearbyShops> {
           'Nearby Shops'
         ),
         centerTitle: true,
+        actions: [
+          IconButton(icon: Icon(
+            Icons.shopping_cart_outlined,
+            color: Colors.green[50],
+            size: 31,
+          ),
+              onPressed: () {
+            print('Hi');
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return ConsumerCart();
+            }));
+              }
+          )
+        ],
       ),
       body: SafeArea(
         child: Container(
@@ -61,8 +77,8 @@ class _NearbyShopsState extends State<NearbyShops> {
               ), itemBuilder: (BuildContext context,int index) {
                     var distance = shops[index]["D"];
                     var dt;
-                    if(distance<0){
-                      dt="<1km";
+                    if(distance<=1){
+                      dt="1";
                     } else {
                       dt=(1*distance).round();
                     }
@@ -75,7 +91,7 @@ class _NearbyShopsState extends State<NearbyShops> {
                         height: size.height/4.5,
                         width: size.width/2-39,
                         decoration: BoxDecoration(
-                          color: Colors.grey[100],
+                          color: Colors.green[50],
                           border:Border.all(
                             width: 0.79,
                             color: Colors.green
@@ -90,18 +106,23 @@ class _NearbyShopsState extends State<NearbyShops> {
                                 height: (size.width/2-39)/1.75,
                                 width: (size.width/2-39)/1.75,
                                 margin: EdgeInsets.only(top:15),
-                                child: Image.network(shops[index]['shop_image'],fit: BoxFit.contain,),
+                                child: Image.network(shops[index]['shop_image'],fit: BoxFit.fitWidth,),
                               ),
                               SizedBox(
                                 height: 9,
                               ),
                               Container(
-                                child: Text(
-                                  shops[index]['shop_name'],
-                                  style: TextStyle(
-                                      fontSize: 25
+                                //margin: EdgeInsets.only(left:2.5,right: 2.5),
+                                child: Center(
+                                  child: Text(
+                                    shops[index]['shop_name'],
+                                    style: TextStyle(
+                                        fontSize: 21
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.clip,
                                   ),
-                                ),
+                                )
                               ),
                               SizedBox(
                                 height: 9,

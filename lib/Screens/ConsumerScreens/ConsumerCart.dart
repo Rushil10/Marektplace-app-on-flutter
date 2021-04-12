@@ -1,115 +1,88 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:grocy/consumer_api.dart';
 
-class ShopProducts extends StatefulWidget {
+class ConsumerCart extends StatefulWidget {
   @override
-  final shop;
-  ShopProducts({this.shop});
-  _ShopProductsState createState() => _ShopProductsState();
+  _ConsumerCartState createState() => _ConsumerCartState();
 }
 
-class _ShopProductsState extends State<ShopProducts> {
+class _ConsumerCartState extends State<ConsumerCart> {
+  ConsumerApi con = new ConsumerApi();
+  var products = [];
   var loading = true;
-  var ordered = [];
-  var pl=[];
-  var products;
-  var showSearch=false;
-  var st = '';
-  var bp = [];
   var orderCount = new Map();
+  var total;
+
   @override
   void initState() {
     // TODO: implement initState
-    getAllProducts();
+    getCartItems();
     super.initState();
   }
 
-  void getAllProducts() async{
+  void getCartItems() async {
     setState(() {
       loading=true;
     });
-    ConsumerApi consumer = new ConsumerApi();
-    var data = await consumer.getShopProducts(widget.shop['shop_id']);
-    print(data);
+    var data = await con.getCartItems();
     var orderC = new Map();
     for(int i=0;i<data.length;i++){
-      orderC[data[i]['product_id']]=0;
+      orderC[data[i]['product_id']]=data[i]['quantity'];
+    }
+    var tot=0;
+    if(data.length>0){
+      tot = data[0]['cart_total'];
     }
     setState(() {
-      orderCount=orderC;
       products=data;
-      bp=data;
-      ordered=List.generate(products.length, (index) => index*0);
-      pl=List.generate(products.length, (index) => index*0);
+      orderCount=orderC;
       loading=false;
+      total = tot;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var tp=total.toString();
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.shop['shop_name']
+          'Cart'
         ),
         centerTitle: true,
-        actions: [
-          IconButton(icon: Icon(
-            Icons.search,
-            size: 29,
-          ),
-              onPressed: () {
-            if(showSearch){
-              setState(() {
-                products=bp;
-              });
-            }
-                  setState(() {
-                    showSearch=!showSearch;
-                  });
-              })
-        ],
       ),
       body: Column(
         children: [
-          showSearch ? Container(
-            margin: EdgeInsets.only(left: 12.5,right: 12.5,top: 5),
-            child: TextField(
-              autofocus: true,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(left: 9),
-                //border: InputBorder.none
-              ),
-              style: TextStyle(
-                fontSize: 19
-              ),
-              onChanged: (val) {
-                setState(() {
-                  st=val;
-                });
-                print(st.length);
-                if(st.length==0){
-                  setState(() {
-                    loading=true;
-                    products=bp;
-                    loading=false;
-                  });
-                } else {
-                  var items = bp.where((element) => element['product_name'].toString().toLowerCase().contains(st.toLowerCase())).toList();
-                  setState(() {
-                    loading=true;
-                    products=items;
-                    loading=false;
-                  });
-                }
-              },
-            ),
-          ) : Container(
-            height: 0,
-          ),
+          !loading ? Container(
+              margin: EdgeInsets.only(left: 12.5,right: 12.5,top: 5,bottom: 5),
+              child: Row(
+                children: [
+                  Text(
+                    'Total :',
+                    style: TextStyle(
+                        fontSize: 25
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'Rs $tp',
+                        style: TextStyle(
+                            fontSize: 25
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              )
+          )
+          :
+              SizedBox(height: 0,)
+          ,
           Expanded(
-              child: !loading ? products.length > 0 ?
+              child: !loading ? products.length>0 ?
               ListView.builder(
                   itemCount: products.length,
                   itemBuilder: (BuildContext context,int index) {
@@ -130,14 +103,37 @@ class _ShopProductsState extends State<ShopProducts> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: (size.width-25)/3,
-                            child: Container(
-                              margin: EdgeInsets.only(left: 12.5,top: 12.5),
-                              width: ((size.width-25)/3)-12.5,
-                              height: ((size.width-25)/3)-12.5,
-                              child: Image.network(products[index]['product_image'],fit: BoxFit.fitWidth,),
-                            ),
+                          Column(
+                            children: [
+                              Container(
+                                width: (size.width-25)/3,
+                                child: Container(
+                                  margin: EdgeInsets.only(left: 12.5,top: 12.5),
+                                  width: ((size.width-25)/3)-12.5,
+                                  height: ((size.width-25)/3)-12.5,
+                                  child: Image.network(products[index]['product_image'],fit: BoxFit.fitWidth,),
+                                ),
+                              ),
+                              Container(
+                                width:(size.width-25)/3,
+                                height:(size.height/5-((size.width-25)/3)-12.5),
+                                //margin:EdgeInsets.only(left:12.5),
+                                decoration: BoxDecoration(
+                                  //color: Colors.white
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 12.5,top: 4.000005),
+                                  child: Text(
+                                    products[index]['shop_name'],
+                                    style: TextStyle(
+                                      fontSize: 19
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              )
+                            ],
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,9 +207,10 @@ class _ShopProductsState extends State<ShopProducts> {
                                         setState(() {
                                           //consumer
                                           orderCount[products[index]['product_id']]=orderCount[products[index]['product_id']]+1;
-                                          ordered[index]=ordered[index]+1;
+                                          total=total+products[index]['product_price'];
+                                          //ordered[index]=ordered[index]+1;
                                         });
-                                        print(ordered[index]);
+                                        //print(ordered[index]);
                                       },
                                     )
                                         :
@@ -247,7 +244,8 @@ class _ShopProductsState extends State<ShopProducts> {
                                               con.deleteFromCart(products[index]['product_id']);
                                               setState(() {
                                                 orderCount[products[index]['product_id']]=orderCount[products[index]['product_id']]-1;
-                                                ordered[index]=ordered[index]-1;
+                                                total=total-products[index]['product_price'];
+                                                //ordered[index]=ordered[index]-1;
                                               });
                                             },
                                           ),
@@ -292,7 +290,8 @@ class _ShopProductsState extends State<ShopProducts> {
                                               con.addToCart(products[index]['product_id']);
                                               setState(() {
                                                 orderCount[products[index]['product_id']]=orderCount[products[index]['product_id']]+1;
-                                                ordered[index]=ordered[index]+1;
+                                                total=total+products[index]['product_price'];
+                                                //ordered[index]=ordered[index]+1;
                                               });
                                             },
                                           ),
@@ -310,18 +309,17 @@ class _ShopProductsState extends State<ShopProducts> {
                   }
               )
                   :
-              Center(
-                  child : Text(
-                      'No Products Available !'
+                  Center(
+                    child: Text(
+                      'Cart Is Empty !'
+                    ),
                   )
+                  : Center(
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
+                )
               )
-                  :
-              Center(
-                child: Text(
-                    'Loading'
-                ),
-              )
-          ),
+          )
         ],
       ),
     );
