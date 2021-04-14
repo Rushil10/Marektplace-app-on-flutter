@@ -1,5 +1,11 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:grocy/consumer_api.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class ConsumerCart extends StatefulWidget {
   @override
@@ -12,12 +18,65 @@ class _ConsumerCartState extends State<ConsumerCart> {
   var loading = true;
   var orderCount = new Map();
   var total;
+  Razorpay _razorpay;
 
   @override
   void initState() {
     // TODO: implement initState
     getCartItems();
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
     super.initState();
+  }
+
+  void _handlePaymentSuccess() {
+    print("DOne");
+    Fluttertoast.showToast(
+        msg: "SUCCESS: " );
+  }
+
+  void _handlePaymentError() {
+    print("Error");
+  }
+
+  void _handleExternalWallet() {
+    print("Wallet Handling");
+  }
+
+  Future getConsumrerDetails() async{
+    FlutterSecureStorage storage = new FlutterSecureStorage();
+    var token = await storage.read(key: 'user_token');
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    return decodedToken;
+  }
+
+  void openCheckout() async {
+    var options = {
+      'key': 'rzp_test_4t0sWSsmlcPd5x',
+      'amount':total*100,
+      'name': 'Acme Corp.',
+      'description': 'Fine T-Shirt',
+      'prefill': {'contact': '8888888888', 'email': 'test@razorpay.com'},
+      'external': {
+        'wallets': ['paytm']
+      }
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _razorpay.clear();
+    print('disposed');
+    super.dispose();
   }
 
   void getCartItems() async {
@@ -29,9 +88,9 @@ class _ConsumerCartState extends State<ConsumerCart> {
     for(int i=0;i<data.length;i++){
       orderC[data[i]['product_id']]=data[i]['quantity'];
     }
-    var tot=0;
+    double tot=0;
     if(data.length>0){
-      tot = data[0]['cart_total'];
+      tot = data[0]['cart_total'].toDouble();
     }
     setState(() {
       products=data;
@@ -319,6 +378,90 @@ class _ConsumerCartState extends State<ConsumerCart> {
                   valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
                 )
               )
+          ),
+          !loading ? total >0 ?
+              Container(
+                //color: Colors.green[50],
+                child: GestureDetector(
+                    child : Container(
+                      //color: Colors.green,
+                        width: size.width-25,
+                        height:size.height/21,
+                        margin: EdgeInsets.only(bottom: 7.5,top: 5),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(7.5)),
+                            color: Colors.green
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Place Order and Pay',
+                            style: TextStyle(
+                                fontSize: 19,
+                                color: Colors.green[50]
+                            ),
+                          ),
+                        )
+                    ),
+                  onTap: () async {
+                      var data = await con.checkAvalibility();
+                      if(data['products'].length==0){
+                        print(data);
+                        var name = data['faulty']['product_name'];
+                        Dialog errorDialog = Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15))
+                          ),
+                          child: Container(
+                            height: size.height/3,
+                            width: size.width-50,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: size.height/45,
+                                ),
+                                Image.network(data['faulty']['product_image'],height: size.height/7,width: size.height/7,fit: BoxFit.fitWidth,),
+                                SizedBox(
+                                  height: size.height/45,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left:25,right: 25),
+                                  child: data['faulty']['product_quantity']==0 ?
+                                  Center(
+                                    child: Text(
+                                      '$name is Out Of Stock !',
+                                      style: TextStyle(
+                                          fontSize: 29
+                                      ),
+                                      maxLines: 2,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ) :
+                                  Text(
+                                    data['message'],
+                                    maxLines: 3,
+                                    style: TextStyle(
+                                      fontSize: 21
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                        return showDialog(context: context,builder: (BuildContext context) => errorDialog);
+                      } else {
+                        openCheckout();
+                      }
+                  },
+                ),
+              )
+              : SizedBox(
+            height: 0,
+          )
+              :
+          SizedBox(
+            height: 0,
           )
         ],
       ),
