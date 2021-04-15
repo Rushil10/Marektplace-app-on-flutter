@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:grocy/Screens/signupFunctions.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-Uri url = Uri.parse('http://adb06f9e0d39.ngrok.io');
+Uri url = Uri.parse('http://201db250d1a9.ngrok.io');
 var url2 = 'https://localhost:3000';
 
 final storage = new FlutterSecureStorage();
@@ -114,9 +115,47 @@ class ConsumerApi {
   Future makeOrder(String pm) async {
     var token = await storage.read(key: 'user_token');
     print(token);
+    print(pm);
+    String p = await convertOrderPaymentTypeToJson();
     http.Response response = await http.post(Uri.parse('$url/consumer/makeOrder'),
       headers: {"Authorization": 'Bearer $token'},
-      body:pm
+      body:p
+    );
+    //print(response.body);
+    var decodedData = jsonDecode(response.body);
+    print(decodedData);
+    return decodedData;
+  }
+
+  Future getOrders() async{
+    var token = await storage.read(key: 'user_token');
+    print(token);
+    http.Response response = await http.get(Uri.parse('$url/consumer/pending'),
+      headers: {"Authorization": 'Bearer $token'},
+    );
+    //print(response.body);
+    var decodedData = jsonDecode(response.body);
+    print(decodedData);
+    return decodedData;
+  }
+
+  Future getOutForDelivery() async {
+    var token = await storage.read(key: 'user_token');
+    print(token);
+    http.Response response = await http.get(Uri.parse('$url/consumer/outForDelivery'),
+      headers: {"Authorization": 'Bearer $token'},
+    );
+    //print(response.body);
+    var decodedData = jsonDecode(response.body);
+    print(decodedData);
+    return decodedData;
+  }
+
+  Future getDelivered() async {
+    var token = await storage.read(key: 'user_token');
+    print(token);
+    http.Response response = await http.get(Uri.parse('$url/consumer/delivered'),
+      headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
     var decodedData = jsonDecode(response.body);

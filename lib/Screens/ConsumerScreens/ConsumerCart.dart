@@ -41,7 +41,8 @@ class _ConsumerCartState extends State<ConsumerCart> {
     setState(() {
       loading=true;
     });
-    var pm = convertOrderPaymentTypeToJson();
+    var pm = await convertOrderPaymentTypeToJson();
+    print(pm);
     var data = await con.makeOrder(pm);
     if(data['products'].length>0){
       setState(() {
