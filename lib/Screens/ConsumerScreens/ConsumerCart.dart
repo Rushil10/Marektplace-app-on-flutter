@@ -1,8 +1,10 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:grocy/Screens/signupFunctions.dart';
 import 'package:grocy/consumer_api.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -18,31 +20,45 @@ class _ConsumerCartState extends State<ConsumerCart> {
   var loading = true;
   var orderCount = new Map();
   var total;
+  var ps=false;
+  static const platform = const MethodChannel("razorpay_flutter");
   Razorpay _razorpay;
 
   @override
   void initState() {
     // TODO: implement initState
+    super.initState();
     getCartItems();
     _razorpay = Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
-    super.initState();
   }
 
-  void _handlePaymentSuccess() {
-    print("DOne");
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async{
     Fluttertoast.showToast(
-        msg: "SUCCESS: " );
+        msg: "SUCCESS: " + response.paymentId ,timeInSecForIosWeb: 4);
+    setState(() {
+      loading=true;
+    });
+    var pm = convertOrderPaymentTypeToJson();
+    var data = await con.makeOrder(pm);
+    if(data['products'].length>0){
+      setState(() {
+        ps=true;
+      });
+    }
   }
 
-  void _handlePaymentError() {
-    print("Error");
+  void _handlePaymentError(PaymentFailureResponse response) {
+    Fluttertoast.showToast(
+        msg: "ERROR: " + response.code.toString() + " - " + response.message,
+        timeInSecForIosWeb: 4);
   }
 
-  void _handleExternalWallet() {
-    print("Wallet Handling");
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    Fluttertoast.showToast(
+        msg: "EXTERNAL_WALLET: " + response.walletName, timeInSecForIosWeb: 4);
   }
 
   Future getConsumrerDetails() async{
@@ -56,8 +72,8 @@ class _ConsumerCartState extends State<ConsumerCart> {
     var options = {
       'key': 'rzp_test_4t0sWSsmlcPd5x',
       'amount':total*100,
-      'name': 'Acme Corp.',
-      'description': 'Fine T-Shirt',
+      'name': 'Grocy',
+      'description': 'Grocy Products',
       'prefill': {'contact': '8888888888', 'email': 'test@razorpay.com'},
       'external': {
         'wallets': ['paytm']
@@ -141,7 +157,7 @@ class _ConsumerCartState extends State<ConsumerCart> {
               SizedBox(height: 0,)
           ,
           Expanded(
-              child: !loading ? products.length>0 ?
+              child: !loading  ? products.length>0 ?
               ListView.builder(
                   itemCount: products.length,
                   itemBuilder: (BuildContext context,int index) {
@@ -369,13 +385,55 @@ class _ConsumerCartState extends State<ConsumerCart> {
               )
                   :
                   Center(
-                    child: Text(
-                      'Cart Is Empty !'
-                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          //margin: EdgeInsets.only(bottom: 50),
+                          height: size.width/2,
+                          width: size.width/2,
+                          alignment: Alignment.center,
+                          child: Image.asset('assets/images/empty_cart.gif'),
+                        ),
+                        Text(
+                          'Cart Is Empty !',
+                          style: TextStyle(
+                              fontSize: 25
+                          ),
+                        ),
+                        SizedBox(
+                          height: 125,
+                        )
+                      ],
+                    )
                   )
-                  : Center(
-                child: CircularProgressIndicator(
-                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
+                  : ps==false ?
+              Center(
+                  child: CircularProgressIndicator(
+                    valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
+                  )
+              ):
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: size.width/2,
+                      width: size.width/2,
+                      child: Image.asset('assets/images/tick.gif'),
+                    ),
+                    Container(
+                      child: Center(
+                        child: Text(
+                          'Order Successfull',
+                          style: TextStyle(
+                            fontSize: 29,
+                            color: Colors.green
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
                 )
               )
           ),

@@ -112,6 +112,7 @@ class _NearbyShopsState extends State<NearbyShops> {
                                 height: 9,
                               ),
                               Container(
+                                width: size.width/4,
                                 //margin: EdgeInsets.only(left:2.5,right: 2.5),
                                 child: Center(
                                   child: Text(
@@ -120,7 +121,7 @@ class _NearbyShopsState extends State<NearbyShops> {
                                         fontSize: 21
                                     ),
                                     maxLines: 1,
-                                    overflow: TextOverflow.clip,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 )
                               ),

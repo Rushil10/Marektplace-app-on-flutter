@@ -5,6 +5,15 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 
 final storage = new FlutterSecureStorage();
 
+String convertLatLongToJson(var latitude,var longitude) {
+  var res={};
+  res["latitude"]=latitude;
+  res["longitude"]=longitude;
+  String js = json.encode(res);
+  print(js);
+  return js;
+}
+
 String convertDetailsToJson(var email,var password) {
   var res={};
   res["consumer_email"]=email;
@@ -18,6 +27,15 @@ String convertShopDetailsToJson(var email,var password) {
   var res={};
   res["email"]=email;
   res["password"]=password;
+  String js = json.encode(res);
+  print(js);
+  return js;
+}
+
+String convertOrderPaymentTypeToJson() {
+  var res = {};
+  res['payment_mode']='online';
+  res['payment_status']='done';
   String js = json.encode(res);
   print(js);
   return js;
