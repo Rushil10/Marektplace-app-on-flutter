@@ -41,6 +41,15 @@ String convertOrderPaymentTypeToJson() {
   return js;
 }
 
+String convertCodOrderPaymentTypeToJson() {
+  var res = {};
+  res['payment_mode']='cod';
+  res['payment_status']='pending';
+  String js = json.encode(res);
+  print(js);
+  return js;
+}
+
 String convertToJson(var email,var password,var contact,var address,var name) {
   var res = {};
   res["consumer_email"]=email;

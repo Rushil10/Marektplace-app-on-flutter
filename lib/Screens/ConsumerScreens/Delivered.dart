@@ -125,21 +125,6 @@ class _DeliveredState extends State<Delivered> {
                                     )
                                   ],
                                 ),
-                                Divider(
-                                  color: Colors.green,
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        'Payment Status : $ps',
-                                        style: TextStyle(
-                                            fontSize: 16.5
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                )
                               ],
                             )
                         ),

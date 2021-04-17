@@ -116,21 +116,6 @@ class _ConsumerOrderDetailsState extends State<ConsumerOrderDetails> {
               Divider(
                 color: Colors.green,
               ),
-              Row(
-                children: [
-                  Container(
-                    child: Text(
-                      'Payment Status : $ps',
-                      style: TextStyle(
-                          fontSize: 16.5
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              Divider(
-                color: Colors.green,
-              ),
               !loading ?
                   ListView.builder(
                       itemCount: products.length,
@@ -142,6 +127,7 @@ class _ConsumerOrderDetailsState extends State<ConsumerOrderDetails> {
                         var total = products[index]['total'];
                         var ds = products[index]['delivery_status'];
                         var shop_name = products[index]['shop_name'];
+                        var pas = products[index]['payment_status'];
                         return Container(
                           margin: EdgeInsets.only(top:9),
                           decoration: BoxDecoration(
@@ -197,7 +183,7 @@ class _ConsumerOrderDetailsState extends State<ConsumerOrderDetails> {
                                         Container(
                                           width: size.width/2,
                                           child: Text(
-                                            'Quanttity : $quantity',
+                                            'Quantity : $quantity',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -236,6 +222,18 @@ class _ConsumerOrderDetailsState extends State<ConsumerOrderDetails> {
                                     'Delivery Status : $ds',
                                     style: TextStyle(
                                       fontSize: 16.9
+                                    ),
+                                  ),
+                                ),
+                                Divider(
+                                  color: Colors.green,
+                                ),
+                                Container(
+                                  width: size.width-20,
+                                  child: Text(
+                                    'Payment Status : $pas',
+                                    style: TextStyle(
+                                        fontSize: 16.9
                                     ),
                                   ),
                                 ),

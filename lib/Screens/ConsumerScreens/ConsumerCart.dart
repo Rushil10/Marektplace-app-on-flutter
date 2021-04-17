@@ -35,6 +35,18 @@ class _ConsumerCartState extends State<ConsumerCart> {
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
 
+  void makecodPayment() async {
+    setState(() {
+      loading=true;
+    });
+    var data = await con.makeCodOrder();
+    if(data['products'].length>0){
+      setState(() {
+        ps=true;
+      });
+    }
+  }
+
   void _handlePaymentSuccess(PaymentSuccessResponse response) async{
     Fluttertoast.showToast(
         msg: "SUCCESS: " + response.paymentId ,timeInSecForIosWeb: 4);
@@ -510,7 +522,93 @@ class _ConsumerCartState extends State<ConsumerCart> {
                         );
                         return showDialog(context: context,builder: (BuildContext context) => errorDialog);
                       } else {
-                        openCheckout();
+                        //openCheckout();
+                        showModalBottomSheet(context: context, builder: (builder) =>
+                            Container(
+                              height: 200,
+                              width: size.width,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    margin:EdgeInsets.only(top:5),
+                                    child: Text(
+                                      'Payment Mode ',
+                                      style: TextStyle(
+                                        fontSize: 25,
+                                        color: Colors.blueGrey,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left:5,right: 5),
+                                    child: Divider(
+                                      color: Colors.teal,
+                                    ),
+                                  ),
+                                  Padding(padding: EdgeInsets.only(left:12.5,right: 12.5,top: 5),
+                                  child: GestureDetector(
+                                    child: Row(
+                                      //crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Image.asset('assets/images/cash.jpg',height: 55,width: 55,),
+                                        Container(
+                                          width: size.width-112.5,
+                                          margin: EdgeInsets.only(left: 12.5),
+                                          child: Text(
+                                            'Cash On Delivery',
+                                            style: TextStyle(
+                                                fontSize: 21.99,
+                                                color: Colors.teal
+                                            ),
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      //cod order
+                                      makecodPayment();
+                                      Navigator.pop(context);
+                                    },
+                                  )
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left:5,right: 5),
+                                    child: Divider(
+                                      color: Colors.teal,
+                                    ),
+                                  ),
+                                  Padding(padding: EdgeInsets.only(left:12.5,right: 12.5,top: 5),
+                                      child: GestureDetector(
+                                        child: Row(
+                                          //crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Image.asset('assets/images/online.jpg',height: 55,width: 55,),
+                                            Container(
+                                              width: size.width-112.5,
+                                              margin: EdgeInsets.only(left: 12.5),
+                                              child: Text(
+                                                'Online',
+                                                style: TextStyle(
+                                                    fontSize: 21.99,
+                                                    color: Colors.teal
+                                                ),
+                                                textAlign: TextAlign.left,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        onTap: () {
+                                          //online order
+                                          openCheckout();
+                                        },
+                                      )
+                                  ),
+                                ],
+                              ),
+                          )
+                        );
                       }
                   },
                 ),

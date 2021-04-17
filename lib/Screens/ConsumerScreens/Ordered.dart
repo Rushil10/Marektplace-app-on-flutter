@@ -127,21 +127,6 @@ class _OrderedState extends State<Ordered> {
                                   )
                                 ],
                               ),
-                              Divider(
-                                color: Colors.green,
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    child: Text(
-                                      'Payment Status : $ps',
-                                      style: TextStyle(
-                                          fontSize: 16.5
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              )
                             ],
                           )
                       ),
