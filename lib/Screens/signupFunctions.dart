@@ -50,13 +50,14 @@ String convertCodOrderPaymentTypeToJson() {
   return js;
 }
 
-String convertToJson(var email,var password,var contact,var address,var name) {
+String convertToJson(var email,var password,var contact,var address,var name,var image) {
   var res = {};
   res["consumer_email"]=email;
   res["consumer_password"]=password;
   res["consumer_contact"]=contact;
   res["consumer_address"]=address;
   res["consumer_name"]=name;
+  res["consumer_image"]=image;
   String js = json.encode(res);
   print(js);
   return js;

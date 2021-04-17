@@ -18,7 +18,6 @@ class _ShopSignupScreenState extends State<ShopSignupScreen> {
   var shopContact;
   var area;
   var landmark;
-  var town;
   var upiId;
   var address;
   @override
@@ -44,7 +43,7 @@ class _ShopSignupScreenState extends State<ShopSignupScreen> {
                     ),
                     Container(
                       child: RoundedInputField(
-                        hintText: 'Shop Name',
+                        hintText: 'Shop Owner Name',
                         icon: Icons.person,
                         onChanged: (value) {
                           ownerName=value;
@@ -80,15 +79,6 @@ class _ShopSignupScreenState extends State<ShopSignupScreen> {
                     ),
                     Container(
                       child: RoundedInputField(
-                        hintText: 'Town/City',
-                        icon: Icons.location_city_outlined,
-                        onChanged: (value) {
-                          town=value;
-                        },
-                      ),
-                    ),
-                    Container(
-                      child: RoundedInputField(
                         hintText: 'Shop UPI Id',
                         icon: Icons.payment,
                         onChanged: (value) {
@@ -99,7 +89,7 @@ class _ShopSignupScreenState extends State<ShopSignupScreen> {
                     RoundedButton(
                       text: 'SIGNUP',
                       press: () async {
-                        address = area + ', ' + landmark + ', ' + town;
+                        address = area + ', ' + landmark ;
                         Navigator.push(context, MaterialPageRoute(builder: (context) {
                           return ShopLocationScreen(
                             email: widget.email,

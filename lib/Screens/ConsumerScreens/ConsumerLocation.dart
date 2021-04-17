@@ -24,6 +24,10 @@ class ConsumerLocationScreen extends StatefulWidget {
 }
 
 class _ConsumerLocationScreenState extends State<ConsumerLocationScreen> {
+  File _image;
+  static const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  Random _rnd = Random();
+  var imageUrl;
   var latitude;
   var loading=false;
   var longitude;
@@ -36,6 +40,22 @@ class _ConsumerLocationScreenState extends State<ConsumerLocationScreen> {
   LocationResult _pickedLocation;
   final storage = new FlutterSecureStorage();
   var error;
+
+  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+
+  Future getImageFromGallery() async{
+    final image = await ImagePicker().getImage(source: ImageSource.gallery);
+    setState(() {
+      _image=File(image.path);
+    });
+  }
+  Future getImageFromCamera() async{
+    final image = await ImagePicker().getImage(source: ImageSource.camera);
+    setState(() {
+      _image=File(image.path);
+    });
+  }
 
   void storeLocation() async{
     var addresses = [];
@@ -65,12 +85,15 @@ class _ConsumerLocationScreenState extends State<ConsumerLocationScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  margin: EdgeInsets.only(top:25,bottom: 25,left:0 ),
-                  child: Image.asset(
-                    "assets/images/loc2.jpg",
-                    height: size.height/3,
-                    width: size.width-45,
+                  decoration: BoxDecoration(
+
                   ),
+                    margin: EdgeInsets.only(top:25,bottom: 25,left:0 ),
+                    child: Image.asset(
+                      "assets/images/loc2.jpg",
+                      height: size.height/3,
+                      width: size.width-45,
+                    )
                 ),
                 Container(
                   child: TextButton(

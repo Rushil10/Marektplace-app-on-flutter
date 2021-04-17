@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:grocy/consumer_api.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class ConsumerOrderDetails extends StatefulWidget {
   @override
@@ -11,6 +13,7 @@ class ConsumerOrderDetails extends StatefulWidget {
 class _ConsumerOrderDetailsState extends State<ConsumerOrderDetails> {
   var loading = true;
   var products ;
+  var consumer;
   ConsumerApi con = new ConsumerApi();
   @override
   void initState() {
@@ -24,8 +27,13 @@ class _ConsumerOrderDetailsState extends State<ConsumerOrderDetails> {
       loading=true;
     });
     var data = await con.getOrderDetails(widget.orders['order_cart_id']);
+    FlutterSecureStorage storage = new FlutterSecureStorage();
+    var token = await storage.read(key: 'user_token');
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    print(decodedToken);
     setState(() {
       products=data;
+      consumer=decodedToken;
       loading=false;
     });
   }
@@ -112,6 +120,31 @@ class _ConsumerOrderDetailsState extends State<ConsumerOrderDetails> {
                     ),
                   )
                 ],
+              ),
+              Divider(
+                color: Colors.green,
+              ),
+              Container(
+                width: size.width-10,
+                child: Text(
+                  'Delivery Address : ',
+                  style: TextStyle(
+                      fontSize: 16.5
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 2.55,
+              ),
+              Container(
+                width: size.width-10,
+                child: Text(
+                  consumer['consumer_address'],
+                  style: TextStyle(
+                      fontSize: 16.9
+                  ),
+                  maxLines: 3,
+                ),
               ),
               Divider(
                 color: Colors.green,

@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:grocy/Screens/ShopScreens/BottomTabs.dart';
@@ -41,6 +42,13 @@ class _ShopLocationScreenState extends State<ShopLocationScreen> {
   LocationResult _pickedLocation;
   final storage = new FlutterSecureStorage();
   var error;
+  var loading=false;
+  var name;
+  var street;
+  var locality;
+  var sublocality;
+  var postalcode;
+  var completeaddress;
 
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
@@ -82,6 +90,14 @@ class _ShopLocationScreenState extends State<ShopLocationScreen> {
                     children: [
                       Container(
                         //height: size.height/2.5,
+                        margin: EdgeInsets.only(bottom: 15),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.green,
+                            width: 0.75
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(15))
+                        ),
                           child: TextButton(
                             child: _image == null ? Image.asset('assets/images/shop_logo.png',height: size.height/5,) : Image.file(_image,height: size.height/5,width: size.width/5,fit: BoxFit.contain,),
                             onPressed: () {
@@ -189,58 +205,99 @@ class _ShopLocationScreenState extends State<ShopLocationScreen> {
                               SizedBox(
                                 width: 9,
                               ),
+                              !loading ?
                               Text(
                                 'Get Location',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: size.height/50,
                                 ),
-                              ),
+                              )
+                                  :
+                              SizedBox(
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation(Colors.white),
+                                  strokeWidth: 1.5,
+                                ),
+                                height: size.height/31-5,
+                                width: size.height/31-5,
+                              )
                             ],
                           )
                       ),
                     ),
                     onPressed: () async{
-                      //Navigator.push(context, ProductTile())
-                      LocationResult result = await showLocationPicker(
-                        context,
-                        apiKey,
-                        initialCenter: LatLng(31.1975844, 29.9598339),
-//                      automaticallyAnimateToCurrentLocation: true,
-//                      mapStylePath: 'assets/mapStyle.json',
-                        myLocationButtonEnabled: true,
-                        // requiredGPS: true,
-                        layersButtonEnabled: true,
-                        // countries: ['AE', 'NG']
-
-//                      resultCardAlignment: Alignment.bottomCenter,
-                        desiredAccuracy: LocationAccuracy.best,
-                      );
-                      print("result = $result");
                       setState(() {
-                        _pickedLocation = result;
-                        latitude=result.latLng.latitude.toString();
-                        longitude=result.latLng.longitude.toString();
+                        loading=true;
+                      });
+                      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+                      print(position);
+                      setState(() {
+                        loading=false;
+                        latitude=position.latitude.toString();
+                        longitude=position.longitude.toString();
+                      });
+                      if(!loading && latitude!=null && longitude!=null ) {
+                        List<Placemark> placemarks = await placemarkFromCoordinates(double.parse(
+                            latitude), double.parse(longitude));
+                        await showModalBottomSheet(context: context,
+                            builder: (BuildContext context) {
+                              return Container(
+                                  height: size.height/4,
+                                  child: ListView.builder(
+                                      itemCount: placemarks.length,
+                                      itemBuilder: (BuildContext context,int index) {
+                                        return ListTile(
+                                          title: Text(
+                                              placemarks[index].street
+                                          ),
+                                          onTap: () {
+                                            setState(() {
+                                              name = placemarks[index].name;
+                                              locality = placemarks[index].locality;
+                                              street = placemarks[index].street;
+                                              sublocality = placemarks[index].subLocality;
+                                              postalcode=placemarks[index].postalCode;
+                                              completeaddress=widget.address+ ' , ' + street + ' , ' + locality + ' , ' + sublocality + ' , ' + placemarks[index].administrativeArea + ' , ' + postalcode;
+                                            });
+                                            Navigator.pop(context);
+                                          },
+                                        );
+                                      })
+                              );
+                            }
+                        );
+                        print(placemarks);
+                        print(completeaddress);
+                        if(street==null) {
+                          setState(() {
+                            name = placemarks[0].name;
+                            locality = placemarks[0].locality;
+                            street = placemarks[0].street;
+                            sublocality = placemarks[0].subLocality;
+                            postalcode=placemarks[0].postalCode;
+                            completeaddress=widget.address+ ' , ' + street + ' , ' + locality + ' , ' + sublocality + ' , ' + placemarks[0].administrativeArea+' , ' + postalcode;
+                          });
+                        }
                       }
-                      );
                     },
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(5,35, 5, 0),
-                  width: size.width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Latitude : $latitude',
-                        style: TextStyle(
-                          fontSize: 19,
-                          color: Colors.green
-                        ),
-                      )
-                    ],
-                  )
+                    margin: EdgeInsets.fromLTRB(5,35, 5, 0),
+                    width: size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Latitude : $latitude',
+                          style: TextStyle(
+                              fontSize: 19,
+                              color: Colors.green
+                          ),
+                        )
+                      ],
+                    )
                 ),
                 Container(
                     margin: EdgeInsets.fromLTRB(5,35, 5, 0),
@@ -250,6 +307,38 @@ class _ShopLocationScreenState extends State<ShopLocationScreen> {
                       children: [
                         Text(
                           'Longitude : $longitude',
+                          style: TextStyle(
+                              fontSize: 19,
+                              color: Colors.green
+                          ),
+                        )
+                      ],
+                    )
+                ),
+                Container(
+                    margin: EdgeInsets.fromLTRB(5,35, 5, 0),
+                    width: size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Street : $street',
+                          style: TextStyle(
+                              fontSize: 19,
+                              color: Colors.green
+                          ),
+                        )
+                      ],
+                    )
+                ),
+                Container(
+                    margin: EdgeInsets.fromLTRB(5,35, 5, 0),
+                    width: size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Loaclity : $locality',
                           style: TextStyle(
                               fontSize: 19,
                               color: Colors.green
@@ -306,7 +395,7 @@ class _ShopLocationScreenState extends State<ShopLocationScreen> {
                       setState(() {
                         imageUrl=downloadUrl;
                       });
-                      shop=convertShopSignupDetailsToJson(widget.email, widget.password, widget.shopName, widget.ownerName, widget.shopContact, widget.upiId, latitude, longitude, widget.address,imageUrl);
+                      shop=convertShopSignupDetailsToJson(widget.email, widget.password, widget.shopName, widget.ownerName, widget.shopContact, widget.upiId, latitude, longitude, completeaddress,imageUrl);
                       print(shop);
                       var data = await shopApi.signup(shop);
                       print(data);

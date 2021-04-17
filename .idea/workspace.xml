@@ -23,14 +23,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9dca2055-a96e-42ca-b6a4-d3cb23a2a446" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/assets/images/cash.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/images/online.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/new_user.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/ConsumerScreens/ConsumerCart.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ConsumerScreens/ConsumerCart.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/ConsumerScreens/ConsumerLocation.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ConsumerScreens/ConsumerLocation.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/ConsumerScreens/ConsumerOrderDetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ConsumerScreens/ConsumerOrderDetails.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/ConsumerScreens/Delivered.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ConsumerScreens/Delivered.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/ConsumerScreens/Ordered.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ConsumerScreens/Ordered.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Screens/ConsumerScreens/OutForDelivery.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ConsumerScreens/OutForDelivery.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/ConsumerScreens/ConsumerProfile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ConsumerScreens/ConsumerProfile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/ConsumerSignupDetails/ConsumerSignup.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ConsumerSignupDetails/ConsumerSignup.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/ShopSignup/ShopLocation.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ShopSignup/ShopLocation.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/ShopSignup/ShopSignupScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/ShopSignup/ShopSignupScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Screens/Signup/components/body.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/Signup/components/body.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Screens/signupFunctions.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Screens/signupFunctions.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/consumer_api.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/consumer_api.dart" afterDir="false" />
     </list>
@@ -65,13 +66,13 @@
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\rushi\OneDrive\Desktop\Mn Git Linked\Grocy\assets\images" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\rushi\OneDrive\Desktop\new_grocy\assets\images" />
       <recent name="C:\Users\rushi\OneDrive\Desktop\Mn Git Linked\Grocy\assets\images" />
       <recent name="C:\Users\rushi\OneDrive\Desktop\Mn Git Linked\Grocy\android\app" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\rushi\OneDrive\Desktop\Mn Git Linked\Grocy\assets\images" />
     </key>
   </component>
   <component name="RunManager" selected="Flutter.main.dart">
@@ -188,22 +189,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="361" y="159" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1616392985685" />
-    <state width="1491" height="204" key="GridCell.Tab.0.bottom" timestamp="1618566126041">
+    <state width="1491" height="202" key="GridCell.Tab.0.bottom" timestamp="1618667625187">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1491" height="204" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1618566126041" />
-    <state width="1491" height="204" key="GridCell.Tab.0.center" timestamp="1618566126041">
+    <state width="1491" height="202" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1618667625187" />
+    <state width="1491" height="202" key="GridCell.Tab.0.center" timestamp="1618667625187">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1491" height="204" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1618566126041" />
-    <state width="1491" height="204" key="GridCell.Tab.0.left" timestamp="1618566126041">
+    <state width="1491" height="202" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1618667625187" />
+    <state width="1491" height="202" key="GridCell.Tab.0.left" timestamp="1618667625187">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1491" height="204" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1618566126041" />
-    <state width="1491" height="204" key="GridCell.Tab.0.right" timestamp="1618566126041">
+    <state width="1491" height="202" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1618667625187" />
+    <state width="1491" height="202" key="GridCell.Tab.0.right" timestamp="1618667625187">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1491" height="204" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1618566126041" />
+    <state width="1491" height="202" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1618667625187" />
     <state x="276" y="155" key="IDE.errors.dialog" timestamp="1617806724013">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

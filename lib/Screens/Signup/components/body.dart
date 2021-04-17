@@ -65,11 +65,10 @@ class _BodyState extends State<Body> {
                 RoundedButton(
                   text: "SIGN UP AS CUSTOMER",
                   press: () {
-                    userInfo = convertDetailsToJson(email, password);
-                    print(userInfo);
                     Navigator.push(context,MaterialPageRoute(builder: (context) {
                       return ConsumerSignup(
-                        userInfo : userInfo,
+                        email:email,
+                        password:password
                       );
                     }));
                   },
