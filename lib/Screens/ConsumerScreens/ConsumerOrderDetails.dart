@@ -14,12 +14,25 @@ class _ConsumerOrderDetailsState extends State<ConsumerOrderDetails> {
   var loading = true;
   var products ;
   var consumer;
+  var sdl = false;
+  var shopDetails;
   ConsumerApi con = new ConsumerApi();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getProducts();
+  }
+
+  void loadShopDetails(shop_id) async{
+    setState(() {
+      sdl=true;
+    });
+    var data = await con.getShopDetails(shop_id);
+    setState(() {
+      shopDetails=data[0];
+      sdl=false;
+    });
   }
 
   void getProducts() async{
@@ -136,6 +149,7 @@ class _ConsumerOrderDetailsState extends State<ConsumerOrderDetails> {
               SizedBox(
                 height: 2.55,
               ),
+              !loading ?
               Container(
                 width: size.width-10,
                 child: Text(
@@ -145,7 +159,11 @@ class _ConsumerOrderDetailsState extends State<ConsumerOrderDetails> {
                   ),
                   maxLines: 3,
                 ),
-              ),
+              )
+              :
+            SizedBox(
+            height: 0,
+        ),
               Divider(
                 color: Colors.green,
               ),
@@ -276,7 +294,7 @@ class _ConsumerOrderDetailsState extends State<ConsumerOrderDetails> {
                                 Row(
                                   children: [
                                     Container(
-                                      width: size.width-59,
+                                      width: size.width-75,
                                       child: Text(
                                         shop_name,
                                         style: TextStyle(
@@ -284,10 +302,123 @@ class _ConsumerOrderDetailsState extends State<ConsumerOrderDetails> {
                                         ),
                                       ),
                                     ),
-                                    Icon(
-                                      Icons.info_outline,
-                                      color: Colors.grey,
-                                      size: 25,
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.info_outline,
+                                        color: Colors.grey,
+                                        size: 27,
+                                      ),
+                                      onPressed: () async{
+                                        await loadShopDetails(products[index]['shop_id']);
+                                        Dialog errorDialog = Dialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(15))
+                                          ),
+                                          child: Container(
+                                            height: size.height/1.5,
+                                            width: size.width-50,
+                                            child:
+                                            Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: size.height/45,
+                                                ),
+                                                Image.network(shopDetails['shop_image'],height: size.height/7,width: size.height/7,fit: BoxFit.fitWidth,),
+                                                SizedBox(
+                                                  height: size.height/45,
+                                                ),
+                                                Text(
+                                                  shopDetails['shop_name'],
+                                                  style: TextStyle(
+                                                      fontSize: 21,
+                                                      color: Colors.black54
+                                                  ),
+                                                ),
+                                                Text(
+                                                  shopDetails['shop_owner'],
+                                                  style: TextStyle(
+                                                      fontSize: 19,
+                                                      color: Colors.black54
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 15,
+                                                ),
+                                                Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 9,
+                                                    ),
+                                                    Icon(Icons.email_outlined,color: Colors.green,size: 27,),
+                                                    SizedBox(
+                                                      width: 9,
+                                                    ),
+                                                    Text(
+                                                      shopDetails['shop_email'],
+                                                      style: TextStyle(
+                                                          fontSize: 21,color: Colors.black54
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 15,
+                                                ),
+                                                Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 9,
+                                                    ),
+                                                    Icon(Icons.phone,color: Colors.green,size: 29,),
+                                                    SizedBox(
+                                                      width: 15,
+                                                    ),
+                                                    Text(
+                                                      shopDetails['shop_contact'],
+                                                      style: TextStyle(
+                                                          fontSize: 21,color: Colors.black54
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 15,
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(left: 9),
+                                                  width: size.width-18,
+                                                  child: Text(
+                                                    'Address : ',
+                                                    style: TextStyle(
+                                                        fontSize: 21,
+                                                        color: Colors.green
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 9,
+                                                ),
+                                                Container(
+                                                  width: size.width-18,
+                                                  margin: EdgeInsets.only(left: 9),
+                                                  child: Text(
+                                                    shopDetails['shop_location'],
+                                                    maxLines: 5,
+                                                    style: TextStyle(
+                                                        fontSize: 21,
+                                                        color: Colors.black54
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            )
+                                          ),
+                                        );
+                                        return showDialog(context: context,builder: (BuildContext context) => errorDialog);
+                                      },
                                     )
                                   ],
                                 )
