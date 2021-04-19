@@ -74,6 +74,42 @@ class _ConsumerLocationScreenState extends State<ConsumerLocationScreen> {
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ConsumerBottomTabs()),(route) => false);
   }
 
+  dynamic renderError(IconData icon,var message) {
+    Size size = MediaQuery.of(context).size;
+    Dialog errorDialog = Dialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15))
+      ),
+      child: Container(
+        height: size.height/5,
+        width: size.width-50,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(icon,size: 49,color: Colors.green,),
+            SizedBox(
+              height: 15,
+            ),
+            Container(
+              margin: EdgeInsets.all(5),
+              child: Text(
+                message,
+                style: TextStyle(
+                    fontSize: 21,
+                    color: Colors.grey
+                ),
+                maxLines: 2,
+                textAlign: TextAlign.center,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+    return showDialog(context: context,builder: (BuildContext context) => errorDialog);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -299,6 +335,9 @@ class _ConsumerLocationScreenState extends State<ConsumerLocationScreen> {
                         ),
                       ),
                       onPressed: () async{
+                        if(latitude==null || longitude==null){
+                          return renderError(Icons.location_searching, 'Latitude and Longitude cannot be empty !');
+                        }
                         storeLocation();
                       }
                   ),

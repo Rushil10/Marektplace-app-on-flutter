@@ -22,6 +22,42 @@ class _BodyState extends State<Body> {
   String userInfo;
   @override
 
+  dynamic renderError(IconData icon,var message) {
+    Size size = MediaQuery.of(context).size;
+    Dialog errorDialog = Dialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15))
+      ),
+      child: Container(
+        height: size.height/5,
+        width: size.width-50,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(icon,size: 49,color: Colors.green,),
+            SizedBox(
+              height: 15,
+            ),
+            Container(
+              margin: EdgeInsets.all(5),
+              child: Text(
+                message,
+                style: TextStyle(
+                    fontSize: 21,
+                    color: Colors.grey
+                ),
+                maxLines: 2,
+                textAlign: TextAlign.center,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+    return showDialog(context: context,builder: (BuildContext context) => errorDialog);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -65,6 +101,21 @@ class _BodyState extends State<Body> {
                 RoundedButton(
                   text: "SIGN UP AS CUSTOMER",
                   press: () {
+                    if(email==null){
+                      print("Email none");
+                      return renderError(Icons.email_outlined, 'Email must not be empty');
+                    }
+                    if(password==null){
+                      print("Password none");
+                      return renderError(Icons.lock_outlined, 'Password must not be empty');
+                    }
+                    if(email.toString().contains(" ")){
+                      return renderError(Icons.space_bar_outlined , 'Email must not include an empty space !');
+                    }
+                    bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+                    if(!emailValid){
+                      return renderError(Icons.email_outlined, 'Email id must be Valid !');
+                    }
                     Navigator.push(context,MaterialPageRoute(builder: (context) {
                       return ConsumerSignup(
                         email:email,
@@ -76,6 +127,21 @@ class _BodyState extends State<Body> {
                 RoundedButton(
                   text: "SIGN UP AS SHOP OWNER",
                   press: () {
+                    if(email==null){
+                      print("Email none");
+                      return renderError(Icons.email_outlined, 'Email must not be empty');
+                    }
+                    if(password==null){
+                      print("Password none");
+                      return renderError(Icons.lock_outlined, 'Password must not be empty');
+                    }
+                    if(email.toString().contains(" ")){
+                      return renderError(Icons.space_bar_outlined , 'Email must not include an empty space !');
+                    }
+                    bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+                    if(!emailValid){
+                      return renderError(Icons.email_outlined, 'Email id must be Valid !');
+                    }
                     Navigator.push(context,MaterialPageRoute(builder: (context) {
                       return ShopSignupScreen(
                         email:email,

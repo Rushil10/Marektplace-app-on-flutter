@@ -23,7 +23,7 @@ class _NearbyShopsState extends State<NearbyShops> {
     super.initState();
   }
 
-  void getShops() async{
+  Future getShops() async{
     setState(() {
       loading=true;
     });
@@ -68,93 +68,97 @@ class _NearbyShopsState extends State<NearbyShops> {
       ),
       body: SafeArea(
         child: Container(
-          child: !loading ?
-              GridView.builder(
-                  itemCount: shops.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          child: RefreshIndicator(
+            child: !loading ?
+            GridView.builder(
+                itemCount: shops.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     childAspectRatio: size.width/(size.height/1.75),
-                crossAxisCount: 2
-              ), itemBuilder: (BuildContext context,int index) {
-                    var distance = shops[index]["D"];
-                    var dt;
-                    if(distance<=1){
-                      dt="1";
-                    } else {
-                      dt=(1*distance).round();
-                    }
-                return Container(
+                    crossAxisCount: 2
+                ), itemBuilder: (BuildContext context,int index) {
+              var distance = shops[index]["D"];
+              var dt;
+              if(distance<=1){
+                dt="1";
+              } else {
+                dt=(1*distance).round();
+              }
+              return Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        height: size.height/4.5,
-                        width: size.width/2-39,
-                        decoration: BoxDecoration(
-                          color: Colors.green[50],
-                          border:Border.all(
-                            width: 0.79,
-                            color: Colors.green
+                          height: size.height/4.5,
+                          width: size.width/2-39,
+                          decoration: BoxDecoration(
+                              color: Colors.green[50],
+                              border:Border.all(
+                                  width: 0.79,
+                                  color: Colors.green
+                              ),
+                              borderRadius: BorderRadius.all(Radius.circular(9))
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(9))
-                        ),
-                        child: GestureDetector(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: (size.width/2-39)/1.75,
-                                width: (size.width/2-39)/1.75,
-                                margin: EdgeInsets.only(top:15),
-                                child: Image.network(shops[index]['shop_image'],fit: BoxFit.fitWidth,),
-                              ),
-                              SizedBox(
-                                height: 9,
-                              ),
-                              Container(
-                                width: size.width/4,
-                                //margin: EdgeInsets.only(left:2.5,right: 2.5),
-                                child: Center(
+                          child: GestureDetector(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: (size.width/2-39)/1.75,
+                                  width: (size.width/2-39)/1.75,
+                                  margin: EdgeInsets.only(top:15),
+                                  child: Image.network(shops[index]['shop_image'],fit: BoxFit.fitWidth,),
+                                ),
+                                SizedBox(
+                                  height: 9,
+                                ),
+                                Container(
+                                    width: size.width/4,
+                                    //margin: EdgeInsets.only(left:2.5,right: 2.5),
+                                    child: Center(
+                                      child: Text(
+                                        shops[index]['shop_name'],
+                                        style: TextStyle(
+                                            fontSize: 21
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    )
+                                ),
+                                SizedBox(
+                                  height: 9,
+                                ),
+                                Container(
                                   child: Text(
-                                    shops[index]['shop_name'],
-                                    style: TextStyle(
-                                        fontSize: 21
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
+                                      "Distance : $dt km"
                                   ),
                                 )
-                              ),
-                              SizedBox(
-                                height: 9,
-                              ),
-                              Container(
-                                child: Text(
-                                    "Distance : $dt km"
-                                ),
-                              )
-                            ],
-                          ),
-                          onTap: () {
-                            print("Take Me to that shop !");
-                            Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return ShopProducts(
-                                shop: shops[index],
-                              );
-                            }));
-                          },
-                        )
+                              ],
+                            ),
+                            onTap: () {
+                              print("Take Me to that shop !");
+                              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                return ShopProducts(
+                                  shop: shops[index],
+                                );
+                              }));
+                            },
+                          )
                       )
                     ],
                   )
-                );
-              })
-              :
-              Center(
-                child: Text(
-                  'Loading'
-                ),
+              );
+            })
+                :
+            Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(Colors.green),
               )
+            ),
+            onRefresh: getShops,
+            color: Colors.green,
+          )
         )
       )
     );

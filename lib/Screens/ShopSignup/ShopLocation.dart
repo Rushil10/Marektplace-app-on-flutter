@@ -50,6 +50,42 @@ class _ShopLocationScreenState extends State<ShopLocationScreen> {
   var postalcode;
   var completeaddress;
 
+  dynamic renderError(IconData icon,var message) {
+    Size size = MediaQuery.of(context).size;
+    Dialog errorDialog = Dialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15))
+      ),
+      child: Container(
+        height: size.height/5,
+        width: size.width-50,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(icon,size: 49,color: Colors.green,),
+            SizedBox(
+              height: 15,
+            ),
+            Container(
+              margin: EdgeInsets.all(5),
+              child: Text(
+                message,
+                style: TextStyle(
+                    fontSize: 21,
+                    color: Colors.grey
+                ),
+                maxLines: 2,
+                textAlign: TextAlign.center,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+    return showDialog(context: context,builder: (BuildContext context) => errorDialog);
+  }
+
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
@@ -99,7 +135,7 @@ class _ShopLocationScreenState extends State<ShopLocationScreen> {
                           borderRadius: BorderRadius.all(Radius.circular(15))
                         ),
                           child: TextButton(
-                            child: _image == null ? Image.asset('assets/images/shop_logo.png',height: size.height/5,) : Image.file(_image,height: size.height/5,width: size.width/5,fit: BoxFit.contain,),
+                            child: _image == null ? Image.asset('assets/images/shop_logo.png',height: size.height/5,width: size.height/5,) : Image.file(_image,height: size.height/5,width: size.height/5,fit: BoxFit.fitWidth,),
                             onPressed: () {
                               showModalBottomSheet(context: context,
                                   builder: (
@@ -387,6 +423,9 @@ class _ShopLocationScreenState extends State<ShopLocationScreen> {
                       ),
                     ),
                     onPressed: () async{
+                      if(latitude==null || longitude==null){
+                        return renderError(Icons.location_searching, 'Latitude and Longitude cannot be empty !');
+                      }
                       var iname = getRandomString(8);
                       final _storage = firebase_storage.FirebaseStorage.instance;
                       var snapshot = await _storage.ref().child('$iname').putFile(_image);

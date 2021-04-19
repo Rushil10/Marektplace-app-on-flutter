@@ -116,7 +116,7 @@ class _ConsumerProfileState extends State<ConsumerProfile> {
                 margin: EdgeInsets.only(top:7.5),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
-                    color: Colors.blueGrey,
+                    color: Colors.blue[50],
                   border: Border.all(
                     width: 0.75,
                     color: Colors.green
