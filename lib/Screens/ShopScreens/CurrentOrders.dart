@@ -9,6 +9,7 @@ class CurrentOrders extends StatefulWidget {
 
 class _CurrentOrdersState extends State<CurrentOrders> {
   var info=[];
+  var l_arr;
   var loading = true;
   ShopApi shop = new ShopApi();
 
@@ -24,8 +25,10 @@ class _CurrentOrdersState extends State<CurrentOrders> {
       loading=true;
     });
     var data = await shop.getOrderedProducts();
+    var list = new List<int>.generate(data.length, (i) => i*0);
     if(data.length>0) {
       setState(() {
+        l_arr=list;
         info=data;
         loading=false;
       });
@@ -40,7 +43,9 @@ class _CurrentOrdersState extends State<CurrentOrders> {
     await shop.updateDeliveryStatus(id);
     var prevList = info;
     prevList.removeAt(index);
+    var list = new List<int>.generate(prevList.length, (i) => i*0);
     setState(() {
+      l_arr=list;
       info=prevList;
     });
   }
@@ -69,7 +74,7 @@ class _CurrentOrdersState extends State<CurrentOrders> {
                 ListView.builder(
                     itemCount: info.length,
                     itemBuilder: (BuildContext context,int index) {
-                      var price = info[index]["order_cart_total"].toString();
+                      var price = info[index]["tota"].toString();
                       var pm = info[index]['payment_mode'].toString();
                       var ps = info[index]['payment_status'].toString();
                       var cc = info[index]['consumer_contact'].toString();
@@ -81,10 +86,11 @@ class _CurrentOrdersState extends State<CurrentOrders> {
                             margin: EdgeInsets.only(top: 15,left:5,right:5),
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: Colors.grey,
+                                    color: Colors.green,
                                     width: 1
                                 ),
-                                borderRadius: BorderRadius.all(Radius.circular(7.5))
+                                borderRadius: BorderRadius.all(Radius.circular(7.5)),
+                              color: Colors.green[50]
                             ),
                             child:Padding(
                               padding: EdgeInsets.all(5.0),
@@ -131,6 +137,9 @@ class _CurrentOrdersState extends State<CurrentOrders> {
                                         ),
                                       )
                                     ],
+                                  ),
+                                  Divider(
+                                    color: Colors.green,
                                   ),
                                   Align(
                                     alignment: Alignment.centerLeft,
@@ -192,16 +201,29 @@ class _CurrentOrdersState extends State<CurrentOrders> {
                                             width:(size.width-10)-12,
                                             height: 41,
                                             child: Center(
-                                              child: Text(
+                                              child: l_arr[index]==0 ? Text(
                                                 'Out For Delivery',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 19
                                                 ),
+                                              ) :
+                                              SizedBox(
+                                                height: 30,
+                                                width: 30,
+                                                child: Center(
+                                                  child: CircularProgressIndicator(
+                                                    valueColor: AlwaysStoppedAnimation(Colors.white),
+                                                    strokeWidth: 2.5,
+                                                  ),
+                                                ),
                                               ),
                                             )
                                         ),
                                         onTap: () async {
+                                          setState(() {
+                                            l_arr[index]=1;
+                                          });
                                           await sendToOutForDelivery(index,info[index]["order_cart_id"].toString());
                                         },
                                       )

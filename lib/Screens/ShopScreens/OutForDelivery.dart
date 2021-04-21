@@ -12,6 +12,8 @@ class _OutForDeliveryState extends State<OutForDelivery> {
   ShopApi shop = new ShopApi();
   var loading=true;
   var info = [];
+  var l_arr;
+  var s_loading = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -25,9 +27,11 @@ class _OutForDeliveryState extends State<OutForDelivery> {
       loading=true;
     });
     var data = await shop.getOutForDeliveryProducts();
+    var list = new List<int>.generate(data.length, (i) => i*0);
     if(data.length>0) {
       setState(() {
         info=data;
+        l_arr=list;
         loading=false;
       });
     } else {
@@ -39,10 +43,15 @@ class _OutForDeliveryState extends State<OutForDelivery> {
 
   void sendToDelivered(index,id) async{
     await shop.updateDeliveryStatus(id);
+    if(info[index]['payment_mode']=='cod'){
+      await shop.updatePaymentStatus(id);
+    }
     var prevList = info;
     prevList.removeAt(index);
+    var list = new List<int>.generate(prevList.length, (i) => i*0);
     setState(() {
       info=prevList;
+      l_arr=list;
     });
   }
   @override
@@ -62,11 +71,12 @@ class _OutForDeliveryState extends State<OutForDelivery> {
               ListView.builder(
                 itemCount: info.length,
                   itemBuilder: (BuildContext context,int index) {
-                  var price = info[index]["order_cart_total"].toString();
+                  var price = info[index]["tota"].toString();
                   var pm = info[index]['payment_mode'].toString();
                   var ps = info[index]['payment_status'].toString();
                   var cc = info[index]['consumer_contact'].toString();
                   var ad = info[index]['consumer_address'].toString();
+                  //var loading = false;
                     return GestureDetector(
                       child: Container(
                         //height: 525,
@@ -74,9 +84,10 @@ class _OutForDeliveryState extends State<OutForDelivery> {
                           margin: EdgeInsets.only(top: 15,left:5,right:5),
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Colors.grey,
+                                  color: Colors.green,
                                   width: 1
                               ),
+                              color:Colors.green[50],
                               borderRadius: BorderRadius.all(Radius.circular(7.5))
                           ),
                           child:Padding(
@@ -124,6 +135,9 @@ class _OutForDeliveryState extends State<OutForDelivery> {
                                       ),
                                     )
                                   ],
+                                ),
+                                Divider(
+                                  color: Colors.green,
                                 ),
                                 Align(
                                   alignment: Alignment.centerLeft,
@@ -185,16 +199,32 @@ class _OutForDeliveryState extends State<OutForDelivery> {
                                           width:(size.width-10)-12,
                                           height: 41,
                                           child: Center(
-                                            child: Text(
-                                              'Delivered',
+                                            child: l_arr[index]==0 ?
+                                            Text(
+                                              'Change Status To Delivered',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                  fontSize: 19
+                                                  fontSize: 19,
+                                                color: Colors.black
+                                              ),
+                                            )
+                                            :
+                                            SizedBox(
+                                              height: 30,
+                                              width: 30,
+                                              child: Center(
+                                                child: CircularProgressIndicator(
+                                                  valueColor: AlwaysStoppedAnimation(Colors.white),
+                                                  strokeWidth: 2.5,
+                                                ),
                                               ),
                                             ),
                                           )
                                       ),
                                       onTap: () async {
+                                        setState(() {
+                                          l_arr[index]=1;
+                                        });
                                         await sendToDelivered(index,info[index]["order_cart_id"].toString());
                                       },
                                     )
@@ -210,7 +240,7 @@ class _OutForDeliveryState extends State<OutForDelivery> {
                             info: info[index],
                             index: index,
                             changeDeliveryStatus: sendToDelivered,
-                            bt: 'Delivered',
+                            bt: 'Change Status To Delivered',
                           );
                         }));
                       },

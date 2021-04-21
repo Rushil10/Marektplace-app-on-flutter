@@ -17,7 +17,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
   ShopApi shop = new ShopApi();
   var orders = [];
   bool loading = true;
-
+  var pressed = 0;
   @override
   void initState() {
     getOrders();
@@ -50,10 +50,53 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
       return 'Not Yet Dispatched';
     }
   }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Change Status of Delivery'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('If you have by mistakely updated the status of order to delivered, click on Change Status to undo it!\n\nThis will also change the payment status to pending if the payment type was cod'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Change Status'),
+              onPressed: () async{
+                await widget.changeDeliveryStatus(widget.index,widget.info['order_cart_id'].toString());
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  String gT() {
+    if(widget.bt=='Change Status To Delivered'){
+      return 'Updated Status To Delivered';
+    } else {
+      return 'Updated Status to Out For Delivery';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var price = widget.info['order_cart_total'].toString();
+    var price = widget.info['tota'].toString();
     var pm = widget.info['payment_mode'].toString();
     var ps = widget.info['payment_status'].toString();
     var cc = widget.info['consumer_contact'].toString();
@@ -66,6 +109,18 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
           'Order Details'
         ),
         centerTitle: true,
+        actions: [
+          widget.bt=='Not Yet Dispatched' ?
+              IconButton(icon:Icon(
+                Icons.help
+              ), onPressed: () async {
+                _showMyDialog();
+              })
+              :
+              Text(
+                ''
+              )
+        ],
       ),
       body: SingleChildScrollView(
         child:Container(
@@ -197,13 +252,14 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                   var total = orders[index]['total'];
                     return Container(
                       margin: EdgeInsets.only(left:5,top:15,right:5),
-                      height: size.height/4.005,
+                      //height: size.height/4.005,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: Colors.grey,
+                          color: Colors.green,
                           width: 1.25
                         ),
-                        borderRadius: BorderRadius.all(Radius.circular(7.5))
+                        borderRadius: BorderRadius.all(Radius.circular(7.5)),
+                        color: Colors.green[50]
                       ),
                       child: Column(
                         //mainAxisAlignment: MainAxisAlignment.start,
@@ -230,6 +286,9 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                 ),
                               )
                             ],
+                          ),
+                          Divider(
+                            color: Colors.green,
                           ),
                           Padding(padding: EdgeInsets.all(5.0),
                             child: Container(
@@ -281,7 +340,9 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
               SizedBox(
                 height: 15,
               ),
-              !loading ? GestureDetector(
+              !loading ? widget.bt!='Not Yet Dispatched' ?
+              pressed==0?
+              GestureDetector(
                 child: Container(
                   height: 45,
                   width: size.width,
@@ -297,8 +358,26 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                 ),
                 onTap: () async {
                   await widget.changeDeliveryStatus(widget.index,widget.info['order_cart_id'].toString());
+                  setState(() {
+                    pressed=1;
+                  });
                 },
-              ) :
+              )
+              :
+                  Container(
+                    margin: EdgeInsets.only(top: 15,left: 15,),
+                    child: Text(
+                      gT(),
+                      style: TextStyle(
+                        fontSize: 19,
+                        color: Colors.green
+                      ),
+                    ),
+                  )
+                  :
+                  Text(
+                    ''
+                  ):
               Text(
                 ''
               ),

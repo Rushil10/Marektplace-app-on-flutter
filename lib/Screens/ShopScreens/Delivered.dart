@@ -38,6 +38,9 @@ class _DeliveredState extends State<Delivered> {
 
   void sendToPending(index,id) async{
     await shop.updateDeliveryStatus(id);
+    if(info[index]['payment_mode']=='cod'){
+      await shop.updatePaymentStatus(id);
+    }
     var prevList = info;
     prevList.removeAt(index);
     setState(() {
@@ -62,7 +65,7 @@ class _DeliveredState extends State<Delivered> {
               ListView.builder(
                   itemCount: info.length,
                   itemBuilder: (BuildContext context,int index) {
-                    var price = info[index]["order_cart_total"].toString();
+                    var price = info[index]["tota"].toString();
                     var pm = info[index]['payment_mode'].toString();
                     var ps = info[index]['payment_status'].toString();
                     var cc = info[index]['consumer_contact'].toString();
@@ -74,10 +77,11 @@ class _DeliveredState extends State<Delivered> {
                           margin: EdgeInsets.only(top: 15,left:5,right:5),
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Colors.grey,
+                                  color: Colors.green,
                                   width: 1
                               ),
-                              borderRadius: BorderRadius.all(Radius.circular(7.5))
+                              borderRadius: BorderRadius.all(Radius.circular(7.5)),
+                            color: Colors.green[50]
                           ),
                           child:Padding(
                             padding: EdgeInsets.all(5.0),
@@ -124,6 +128,9 @@ class _DeliveredState extends State<Delivered> {
                                       ),
                                     )
                                   ],
+                                ),
+                                Divider(
+                                  color: Colors.green,
                                 ),
                                 Align(
                                   alignment: Alignment.centerLeft,
@@ -177,29 +184,6 @@ class _DeliveredState extends State<Delivered> {
                                 SizedBox(
                                   height: 9,
                                 ),
-                                Row(
-                                  children: [
-                                    GestureDetector(
-                                      child: Container(
-                                          color: Colors.green,
-                                          width:(size.width-10)-12,
-                                          height: 41,
-                                          child: Center(
-                                            child: Text(
-                                              'Not Yet Dispatched',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontSize: 19
-                                              ),
-                                            ),
-                                          )
-                                      ),
-                                      onTap: () async {
-                                        await sendToPending(index,info[index]["order_cart_id"].toString());
-                                      },
-                                    )
-                                  ],
-                                )
                               ],
                             ),
                           )

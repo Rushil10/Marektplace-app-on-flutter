@@ -5,7 +5,7 @@ import 'package:grocy/Screens/signupFunctions.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-Uri url = Uri.parse('http://1402cd383dff.ngrok.io');
+Uri url = Uri.parse('http://d72f70458ab1.ngrok.io');
 var url2 = 'https://localhost:3000';
 
 final storage = new FlutterSecureStorage();
@@ -201,6 +201,7 @@ class ConsumerApi {
     print(decodedData);
     return decodedData;
   }
+
 }
 
 class ShopApi {
@@ -212,6 +213,18 @@ class ShopApi {
     print(decodedToken);
     print(token);
     http.Response response = await http.get(Uri.parse('$url/consumer/$shop_id/products'),
+      headers: {"Authorization": 'Bearer $token'},
+    );
+    //print(response.body);
+    var decodedData = jsonDecode(response.body);
+    print(decodedData);
+    return decodedData;
+  }
+
+  Future updatePaymentStatus(var cartId) async {
+    var token = await storage.read(key: 'shop_token');
+    print(token);
+    http.Response response = await http.get(Uri.parse('$url/order/payment/$cartId'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
