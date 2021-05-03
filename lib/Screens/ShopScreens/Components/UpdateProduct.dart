@@ -29,6 +29,7 @@ class _UpdateProductState extends State<UpdateProduct> {
   var increase_quantity=0.toString();
   var decrease_quantity=0.toString();
   var new_url;
+  var bl=0;
   File _image;
   static const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   Random _rnd = Random();
@@ -420,8 +421,14 @@ class _UpdateProductState extends State<UpdateProduct> {
                           print('----------------------------------------------------------------------------------------------------------------');
                           var data = updateProductJson(new_name, new_price, widget.type, widget.qty, increase_quantity, decrease_quantity, new_url);
                           print(data);
-                          var res = shop.updateProduct(data, widget.id);
+                          setState(() {
+                            bl=1;
+                          });
+                          var res = await shop.updateProduct(data, widget.id);
                           print(res);
+                          setState(() {
+                            bl=0;
+                          });
                           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => AddProduct()), (route) => false);
                         },
                             style: ButtonStyle(
@@ -433,13 +440,24 @@ class _UpdateProductState extends State<UpdateProduct> {
                                 ),
                               ),
                             ),
-                            child: Text(
+                            child: bl==0 ?
+                            Text(
                               'Update Product',
                               style: TextStyle(
                                   fontSize: 19,
                                   color: Colors.white
                               ),
-                            )
+                            ) :
+                                Center(
+                                  child: SizedBox(
+                                    height: size.height/19.5,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation(Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                )
                         ),
                       )
                     ],

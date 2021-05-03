@@ -126,10 +126,10 @@ class _ShopSignupScreenState extends State<ShopSignupScreen> {
                     RoundedButton(
                       text: 'SIGNUP',
                       press: () async {
-                        if(shopName==null){
+                        if(shopName==null || shopName.toString().isEmpty){
                           return renderError(Icons.store_mall_directory_rounded, 'Shop name must not be empty');
                         }
-                        if(ownerName==null){
+                        if(ownerName==null || ownerName.toString().isEmpty){
                           return renderError(Icons.person, 'Shop owner Name is mandatory !');
                         }
                         if(shopContact==null){

@@ -51,6 +51,10 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     }
   }
 
+  void goBack() {
+    Navigator.of(context).pop();
+  }
+
   Future<void> _showMyDialog() async {
     return showDialog<void>(
       context: context,
@@ -76,7 +80,9 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
               child: Text('Change Status'),
               onPressed: () async{
                 await widget.changeDeliveryStatus(widget.index,widget.info['order_cart_id'].toString());
+                int count = 0;
                 Navigator.of(context).pop();
+                goBack();
               },
             ),
           ],
