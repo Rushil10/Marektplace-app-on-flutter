@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +10,7 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class ConsumerCart extends StatefulWidget {
   @override
+  const ConsumerCart({Key key}) : super(key: key);
   _ConsumerCartState createState() => _ConsumerCartState();
 }
 

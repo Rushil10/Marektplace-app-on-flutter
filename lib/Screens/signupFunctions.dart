@@ -63,6 +63,19 @@ String convertToJson(var email,var password,var contact,var address,var name,var
   return js;
 }
 
+String convertAddressToJson(var address,var state,var pincode,var longitude,var latitude,var name) {
+  var res = {};
+  res['address']=address;
+  res['state']=state;
+  res['pincode']=pincode;
+  res['latitude']=latitude;
+  res['longitude']=longitude;
+  res['name']=name;
+  String js = json.encode(res);
+  print(js);
+  return js;
+}
+
 String convertProductDetailsToJson(var name, var price,var qty,var imageUrl,var type) {
   var res = {};
   res["product_name"]=name;

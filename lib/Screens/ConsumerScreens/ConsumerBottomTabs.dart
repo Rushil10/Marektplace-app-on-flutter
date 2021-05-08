@@ -139,6 +139,7 @@ class _ConsumerBottomTabsState extends State<ConsumerBottomTabs> {
       ),
       onWillPop: () async {
         print("Back Pressed");
+        print(currentNavigatorKey().currentState);
         return !await currentNavigatorKey().currentState.maybePop();
       },
     );

@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:grocy/Screens/ConsumerScreens/ConsumerBottomTabs.dart';
+import 'package:grocy/components/rounded_input_field.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
@@ -40,6 +41,14 @@ class _ConsumerLocationScreenState extends State<ConsumerLocationScreen> {
   LocationResult _pickedLocation;
   final storage = new FlutterSecureStorage();
   var error;
+  var flat;
+  var area;
+  var landmark;
+  var town;
+  var aname;
+  var faddress;
+  var state;
+  var pincode;
 
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
@@ -58,6 +67,25 @@ class _ConsumerLocationScreenState extends State<ConsumerLocationScreen> {
   }
 
   void storeLocation() async{
+    ConsumerApi con = new ConsumerApi();
+    if(flat==null || flat.toString().isEmpty){
+      return renderError(Icons.home, 'Enter Flat,House,Building Number !');
+    }
+    if(area==null || area.toString().isEmpty){
+      return renderError(Icons.location_city, 'Area must not be empty');
+    }
+    if(landmark==null || landmark.toString().isEmpty){
+      return renderError(Icons.location_on, 'Landmark must not be empty');
+    }
+    if(town==null || town.toString().isEmpty){
+      return renderError(Icons.location_city, 'Town/city name must be given !');
+    }
+    //var address
+    faddress = flat + ', ' + area + ', ' + landmark + ', ' + town;
+    print(faddress);
+    var caddress = convertAddressToJson(faddress, state, pincode, longitude, latitude, aname);
+    var resp = await con.addAddress(caddress);
+    print(resp);
     var addresses = [];
     var res = {};
     res['latitude']=latitude;
@@ -121,15 +149,51 @@ class _ConsumerLocationScreenState extends State<ConsumerLocationScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  decoration: BoxDecoration(
-
+                  margin: EdgeInsets.only(top: 45),
+                  child: RoundedInputField(
+                    hintText: 'Flat, House no., Building',
+                    icon: Icons.home,
+                    onChanged: (value) {
+                      flat=value;
+                    },
                   ),
-                    margin: EdgeInsets.only(top:25,bottom: 25,left:0 ),
-                    child: Image.asset(
-                      "assets/images/loc2.jpg",
-                      height: size.height/3,
-                      width: size.width-45,
-                    )
+                ),
+                Container(
+                  child: RoundedInputField(
+                    hintText: 'Area, Colony, Street, Sector',
+                    icon: Icons.location_city,
+                    onChanged: (value) {
+                      area=value;
+                    },
+                  ),
+                ),
+                Container(
+                  child: RoundedInputField(
+                    hintText: 'Landmark',
+                    icon:Icons.location_on,
+                    onChanged: (value) {
+                      landmark=value;
+                    },
+                  ),
+                ),
+                Container(
+                  child: RoundedInputField(
+                    hintText: 'Town/City',
+                    icon:Icons.location_city_outlined,
+                    onChanged: (value) {
+                      town=value;
+                    },
+                  ),
+                ),
+                Container(
+                  //margin: EdgeInsets.only(top: 45),
+                  child: RoundedInputField(
+                    hintText: 'Give Your Address a Name',
+                    icon: Icons.person,
+                    onChanged: (value) {
+                      aname=value;
+                    },
+                  ),
                 ),
                 Container(
                   child: TextButton(
@@ -210,6 +274,8 @@ class _ConsumerLocationScreenState extends State<ConsumerLocationScreen> {
                                            locality = placemarks[index].locality;
                                            street = placemarks[index].street;
                                            sublocality = placemarks[index].subLocality;
+                                           state=placemarks[index].administrativeArea;
+                                           pincode=placemarks[index].postalCode;
                                          });
                                          Navigator.pop(context);
                                        },
@@ -280,23 +346,7 @@ class _ConsumerLocationScreenState extends State<ConsumerLocationScreen> {
                     )
                 ),
                 Container(
-                    margin: EdgeInsets.fromLTRB(5,35, 5, 0),
-                    width: size.width,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Loaclity : $locality',
-                          style: TextStyle(
-                              fontSize: 19,
-                              color: Colors.green
-                          ),
-                        )
-                      ],
-                    )
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, size.height/15, 0, 0),
+                  margin: EdgeInsets.fromLTRB(0, size.height/25, 0, 0),
                   child: TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
@@ -324,7 +374,7 @@ class _ConsumerLocationScreenState extends State<ConsumerLocationScreen> {
                                   width: 9,
                                 ),
                                 Text(
-                                  'NEXT',
+                                  'Add Address',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: size.height/45,

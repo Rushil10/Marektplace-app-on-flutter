@@ -10,6 +10,7 @@ import 'package:grocy/consumer_api.dart';
 
 class NearbyShops extends StatefulWidget {
   @override
+  const NearbyShops({Key key}) : super(key: key);
   _NearbyShopsState createState() => _NearbyShopsState();
 }
 
