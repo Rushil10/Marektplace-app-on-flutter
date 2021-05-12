@@ -21,6 +21,9 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class ConsumerLocationScreen extends StatefulWidget {
   @override
+  final Function addAddress;
+  final alreadyin;
+  ConsumerLocationScreen({this.addAddress,this.alreadyin});
   _ConsumerLocationScreenState createState() => _ConsumerLocationScreenState();
 }
 
@@ -86,6 +89,11 @@ class _ConsumerLocationScreenState extends State<ConsumerLocationScreen> {
     var caddress = convertAddressToJson(faddress, state, pincode, longitude, latitude, aname);
     var resp = await con.addAddress(caddress);
     print(resp);
+    print("From    hereeeeeeeeee");
+    if(widget.alreadyin!=null){
+      widget.addAddress(resp);
+      return Navigator.pop(context);
+    }
     var addresses = [];
     var res = {};
     res['latitude']=latitude;
@@ -99,7 +107,12 @@ class _ConsumerLocationScreenState extends State<ConsumerLocationScreen> {
     var allAddresses = jsonEncode(addresses);
     FlutterSecureStorage storage = new FlutterSecureStorage();
     await storage.write(key: 'addresses', value: allAddresses);
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ConsumerBottomTabs()),(route) => false);
+    if(widget.alreadyin!=null){
+      widget.addAddress(resp[0]);
+      Navigator.pop(context);
+    } else {
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ConsumerBottomTabs()),(route) => false);
+    }
   }
 
   dynamic renderError(IconData icon,var message) {

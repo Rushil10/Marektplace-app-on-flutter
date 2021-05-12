@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:grocy/Screens/ConsumerScreens/AllConsumerAddress.dart';
 import 'package:grocy/Screens/Welcome/welcome_screen.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -181,15 +182,26 @@ class _ConsumerProfileState extends State<ConsumerProfile> {
                 SizedBox(
                   height: 15,
                 ),
-                Container(
-                  width: size.width-18,
-                  child: Text(
-                    'Address : ',
-                    style: TextStyle(
-                        fontSize: 21,
-                        color: Colors.green
+                Row(
+                  children: [
+                    Container(
+                      child: Text(
+                        'Address : ',
+                        style: TextStyle(
+                            fontSize: 21,
+                            color: Colors.green
+                        ),
+                      ),
                     ),
-                  ),
+                    Expanded(child: Text(
+                      ''
+                    )),
+                    IconButton(icon: Icon(Icons.edit,color: Colors.green,size: 25,), onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                        return AllAddresses();
+                      }));
+                    })
+                  ],
                 ),
                 SizedBox(
                   height: 9,
@@ -207,6 +219,24 @@ class _ConsumerProfileState extends State<ConsumerProfile> {
                 )
               ],
             ),
+            ),
+            GestureDetector(
+              child: Container(
+                margin: EdgeInsets.only(left: 0),
+                width: size.width-15,
+                alignment: Alignment.centerLeft,
+
+                child: Padding(
+                  padding: EdgeInsets.only(top:5,bottom: 5),
+                  child: Text(
+                    'Manage My Address',
+                    style: TextStyle(
+                        fontSize: 22.5,
+                      color: Colors.green
+                    ),
+                  ),
+                )
+              ),
             )
           ],
         )
