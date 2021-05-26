@@ -11,7 +11,6 @@ import 'package:grocy/components/rounded_button.dart';
 import 'package:grocy/constants.dart';
 import 'package:flutter_svg/svg.dart';
 
-
 class Body extends StatefulWidget {
   @override
   _BodyState createState() => _BodyState();
@@ -24,7 +23,7 @@ class _BodyState extends State<Body> {
     checkLogin();
   }
 
-  void checkLogin() async{
+  void checkLogin() async {
     print("Called");
     final storage = new FlutterSecureStorage();
     String user_token = await storage.read(key: 'user_token');
@@ -33,74 +32,80 @@ class _BodyState extends State<Body> {
     print("Shop Token");
     print(shop_token);
     print(user_token);
-    if(user_token!=null && addresses==null){
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ConsumerLocationScreen()),(route) => false);
+    if (user_token != null && addresses == null) {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (context) => ConsumerLocationScreen(
+                    alreadyin: false,
+                  )),
+          (route) => false);
     }
-    if(addresses!=null) {
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ConsumerBottomTabs()),(route) => false);
+    if (addresses != null) {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => ConsumerBottomTabs()),
+          (route) => false);
     }
-    if(shop_token!=null){
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BottomTabs()),(route) => false);
+    if (shop_token != null) {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => BottomTabs()),
+          (route) => false);
     }
   }
+
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
       child: SingleChildScrollView(
-        child: SafeArea(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(height: size.height * 0.05),
-                Image.asset(
-                  "assets/images/shopping_logo.jpg",
-                  height: size.height * 0.45,
+          child: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(height: size.height * 0.05),
+              Image.asset(
+                "assets/images/shopping_logo.jpg",
+                height: size.height * 0.45,
+              ),
+              SizedBox(height: size.height * 0.025),
+              Container(
+                child: Text(
+                  'Grocyyy',
+                  style: TextStyle(color: Color(0xFF27AE60), fontSize: 40),
                 ),
-                SizedBox(height: size.height * 0.025),
-                Container(
-                  child: Text(
-                    'Grocyyy',
-                    style: TextStyle(
-                      color: Color(0xFF27AE60),
-                      fontSize: 40
+              ),
+              SizedBox(height: size.height * 0.025),
+              RoundedButton(
+                text: "LOGIN",
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return LoginScreen();
+                      },
                     ),
-                  ),
-                ),
-                SizedBox(height: size.height * 0.025),
-                RoundedButton(
-                  text: "LOGIN",
-                  press: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return LoginScreen();
-                        },
-                      ),
-                    );
-                  },
-                ),
-                RoundedButton(
-                  text: "SIGN UP",
-                  color: kPrimaryLightColor,
-                  textColor: Colors.black,
-                  press: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return SignUpScreen();
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
+                  );
+                },
+              ),
+              RoundedButton(
+                text: "SIGN UP",
+                color: kPrimaryLightColor,
+                textColor: Colors.black,
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return SignUpScreen();
+                      },
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
-        )
-      ),
+        ),
+      )),
     );
   }
 }

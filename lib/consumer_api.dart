@@ -5,7 +5,7 @@ import 'package:grocy/Screens/signupFunctions.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-Uri url = Uri.parse('http://e95b7f2c0ca2.ngrok.io');
+Uri url = Uri.parse('http://9aa7493b4f0f.ngrok.io');
 var url2 = 'https://localhost:3000';
 
 final storage = new FlutterSecureStorage();
@@ -13,8 +13,7 @@ final storage = new FlutterSecureStorage();
 class ConsumerApi {
   Future signup(String user) async {
     http.Response response = await http.post(Uri.parse('$url/consumer/signup'),
-        headers: {"Content-Type": "application/json"},
-        body:user);
+        headers: {"Content-Type": "application/json"}, body: user);
     String data = response.body;
     var decodedData = jsonDecode(data);
     print(decodedData);
@@ -23,8 +22,7 @@ class ConsumerApi {
 
   Future login(String user) async {
     http.Response response = await http.post(Uri.parse('$url/consumer/login'),
-        headers: {"Content-Type": "application/json"},
-        body:user);
+        headers: {"Content-Type": "application/json"}, body: user);
     String data = response.body;
     var decodedData = jsonDecode(data);
     print(decodedData);
@@ -35,8 +33,11 @@ class ConsumerApi {
     var token = await storage.read(key: 'user_token');
     print(token);
     http.Response response = await http.post(Uri.parse('$url/consumer/shops'),
-        headers: {"Content-Type": "application/json","Authorization": 'Bearer $token'},
-        body:location);
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $token'
+        },
+        body: location);
     String data = response.body;
     print(data);
     var decodedData = jsonDecode(data);
@@ -48,8 +49,11 @@ class ConsumerApi {
     var token = await storage.read(key: 'user_token');
     print(token);
     http.Response response = await http.post(Uri.parse('$url/consumer/address'),
-        headers: {"Content-Type": "application/json","Authorization": 'Bearer $token'},
-        body:address);
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $token'
+        },
+        body: address);
     String data = response.body;
     print(data);
     var decodedData = jsonDecode(data);
@@ -60,7 +64,8 @@ class ConsumerApi {
   Future getMyAddresses() async {
     var token = await storage.read(key: 'user_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/consumer/address'),
+    http.Response response = await http.get(
+      Uri.parse('$url/consumer/address'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
@@ -72,7 +77,8 @@ class ConsumerApi {
   Future getShopProducts(var shop_id) async {
     var token = await storage.read(key: 'user_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/consumer/$shop_id/products'),
+    http.Response response = await http.get(
+      Uri.parse('$url/consumer/$shop_id/products'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
@@ -84,7 +90,8 @@ class ConsumerApi {
   Future addToCart(var product_id) async {
     var token = await storage.read(key: 'user_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/consumer/cart/$product_id'),
+    http.Response response = await http.get(
+      Uri.parse('$url/consumer/cart/$product_id'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
@@ -96,7 +103,8 @@ class ConsumerApi {
   Future subtractFromCart(var product_id) async {
     var token = await storage.read(key: 'user_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/consumer/cart/remove/$product_id'),
+    http.Response response = await http.get(
+      Uri.parse('$url/consumer/cart/remove/$product_id'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
@@ -108,15 +116,20 @@ class ConsumerApi {
   Future deleteFromCart(var product_id) async {
     var token = await storage.read(key: 'user_token');
     print(token);
-    http.Response response = await http.delete(Uri.parse('$url/consumer/cart/$product_id'),
-      headers: {"Content-Type": "application/json","Authorization": 'Bearer $token'},
+    http.Response response = await http.delete(
+      Uri.parse('$url/consumer/cart/$product_id'),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": 'Bearer $token'
+      },
     );
   }
 
   Future getCartItems() async {
     var token = await storage.read(key: 'user_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/consumer/cartItems'),
+    http.Response response = await http.get(
+      Uri.parse('$url/consumer/cartItems'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
@@ -128,7 +141,8 @@ class ConsumerApi {
   Future checkAvalibility() async {
     var token = await storage.read(key: 'user_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/consumer/checkAvalibility'),
+    http.Response response = await http.get(
+      Uri.parse('$url/consumer/checkAvalibility'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
@@ -140,7 +154,8 @@ class ConsumerApi {
   Future getShopDetails(var shop_id) async {
     var token = await storage.read(key: 'user_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/consumer/shopDetails/$shop_id'),
+    http.Response response = await http.get(
+      Uri.parse('$url/consumer/shopDetails/$shop_id'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
@@ -154,10 +169,10 @@ class ConsumerApi {
     print(token);
     print(pm);
     String p = await convertOrderPaymentTypeToJson();
-    http.Response response = await http.post(Uri.parse('$url/consumer/makeOrder'),
-      headers: {"Authorization": 'Bearer $token'},
-      body:p
-    );
+    http.Response response = await http.post(
+        Uri.parse('$url/consumer/makeOrder'),
+        headers: {"Authorization": 'Bearer $token'},
+        body: p);
     //print(response.body);
     var decodedData = jsonDecode(response.body);
     print(decodedData);
@@ -169,20 +184,21 @@ class ConsumerApi {
     print(token);
     //print(pm);
     String p = await convertCodOrderPaymentTypeToJson();
-    http.Response response = await http.post(Uri.parse('$url/consumer/makeOrderCod'),
+    http.Response response = await http.post(
+        Uri.parse('$url/consumer/makeOrderCod'),
         headers: {"Authorization": 'Bearer $token'},
-        body:p
-    );
+        body: p);
     //print(response.body);
     var decodedData = jsonDecode(response.body);
     print(decodedData);
     return decodedData;
   }
 
-  Future getOrders() async{
+  Future getOrders() async {
     var token = await storage.read(key: 'user_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/consumer/pending'),
+    http.Response response = await http.get(
+      Uri.parse('$url/consumer/pending'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
@@ -194,7 +210,8 @@ class ConsumerApi {
   Future getOutForDelivery() async {
     var token = await storage.read(key: 'user_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/consumer/outForDelivery'),
+    http.Response response = await http.get(
+      Uri.parse('$url/consumer/outForDelivery'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
@@ -206,7 +223,8 @@ class ConsumerApi {
   Future getDelivered() async {
     var token = await storage.read(key: 'user_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/consumer/delivered'),
+    http.Response response = await http.get(
+      Uri.parse('$url/consumer/delivered'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
@@ -218,7 +236,8 @@ class ConsumerApi {
   Future getOrderDetails(var cartId) async {
     var token = await storage.read(key: 'user_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/consumer/orders/$cartId'),
+    http.Response response = await http.get(
+      Uri.parse('$url/consumer/orders/$cartId'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
@@ -227,17 +246,46 @@ class ConsumerApi {
     return decodedData;
   }
 
+  Future getTokenDetails(String newAddress) async {
+    var token = await storage.read(key: 'user_token');
+    print(token);
+    print(newAddress);
+    http.Response response = await http.post(
+        Uri.parse('$url/consumer/changeAddress'),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $token'
+        },
+        body: newAddress);
+    //print(response.body);
+    var decodedData = jsonDecode(response.body);
+    print(decodedData);
+    return decodedData;
+  }
+
+  Future updateAddress(var addressId) async {
+    var token = await storage.read(key: 'user_token');
+    print(token);
+    http.Response response = await http.get(
+      Uri.parse('$url/consumer/address/update/$addressId'),
+      headers: {"Authorization": 'Bearer $token'},
+    );
+    //print(response.body);
+    var decodedData = jsonDecode(response.body);
+    print(decodedData);
+    return decodedData;
+  }
 }
 
 class ShopApi {
-
-  Future getProducts() async{
+  Future getProducts() async {
     var token = await storage.read(key: 'shop_token');
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
     var shop_id = decodedToken['shop_id'];
     print(decodedToken);
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/consumer/$shop_id/products'),
+    http.Response response = await http.get(
+      Uri.parse('$url/consumer/$shop_id/products'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
@@ -249,7 +297,8 @@ class ShopApi {
   Future updatePaymentStatus(var cartId) async {
     var token = await storage.read(key: 'shop_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/order/payment/$cartId'),
+    http.Response response = await http.get(
+      Uri.parse('$url/order/payment/$cartId'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
@@ -261,7 +310,8 @@ class ShopApi {
   Future getOutForDeliveryProducts() async {
     var token = await storage.read(key: 'shop_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/orders/outForDelivery'),
+    http.Response response = await http.get(
+      Uri.parse('$url/orders/outForDelivery'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
@@ -273,7 +323,8 @@ class ShopApi {
   Future getDeliveredProducts() async {
     var token = await storage.read(key: 'shop_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/orders/delivered'),
+    http.Response response = await http.get(
+      Uri.parse('$url/orders/delivered'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
@@ -285,7 +336,8 @@ class ShopApi {
   Future getOrderedProducts() async {
     var token = await storage.read(key: 'shop_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/shop/orders'),
+    http.Response response = await http.get(
+      Uri.parse('$url/shop/orders'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
@@ -296,8 +348,7 @@ class ShopApi {
 
   Future signup(String shop) async {
     http.Response response = await http.post(Uri.parse('$url/shop/signup'),
-        headers: {"Content-Type": "application/json"},
-        body:shop);
+        headers: {"Content-Type": "application/json"}, body: shop);
     String data = response.body;
     print(data);
     var decodedData = jsonDecode(data);
@@ -305,11 +356,9 @@ class ShopApi {
     return decodedData;
   }
 
-
   Future login(String shop) async {
     http.Response response = await http.post(Uri.parse('$url/shop/login'),
-        headers: {"Content-Type": "application/json"},
-        body:shop);
+        headers: {"Content-Type": "application/json"}, body: shop);
     String data = response.body;
     print(data);
     var decodedData = jsonDecode(data);
@@ -321,8 +370,11 @@ class ShopApi {
     var token = await storage.read(key: 'shop_token');
     print(token);
     http.Response response = await http.post(Uri.parse('$url/shop/product'),
-        headers: {"Content-Type": "application/json","Authorization": 'Bearer $token'},
-        body:product);
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $token'
+        },
+        body: product);
     String data = response.body;
     print(data);
     var decodedData = jsonDecode(data);
@@ -330,12 +382,16 @@ class ShopApi {
     return decodedData;
   }
 
-  Future updateProduct(String product,var product_id) async {
+  Future updateProduct(String product, var product_id) async {
     var token = await storage.read(key: 'shop_token');
     print(token);
-    http.Response response = await http.post(Uri.parse('$url/shop/product/$product_id'),
-        headers: {"Content-Type": "application/json","Authorization": 'Bearer $token'},
-        body:product);
+    http.Response response = await http.post(
+        Uri.parse('$url/shop/product/$product_id'),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $token'
+        },
+        body: product);
     String data = response.body;
     print(data);
     var decodedData = jsonDecode(data);
@@ -343,26 +399,35 @@ class ShopApi {
     return decodedData;
   }
 
-  Future deleteProduct(var product_id) async{
+  Future deleteProduct(var product_id) async {
     var token = await storage.read(key: 'shop_token');
     print(token);
-    http.Response response = await http.delete(Uri.parse('$url/shop/product/$product_id'),
-        headers: {"Content-Type": "application/json","Authorization": 'Bearer $token'},
+    http.Response response = await http.delete(
+      Uri.parse('$url/shop/product/$product_id'),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": 'Bearer $token'
+      },
     );
   }
 
   Future updateDeliveryStatus(var cart_id) async {
     var token = await storage.read(key: 'shop_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/order/$cart_id'),
-      headers: {"Content-Type": "application/json","Authorization": 'Bearer $token'},
+    http.Response response = await http.get(
+      Uri.parse('$url/order/$cart_id'),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": 'Bearer $token'
+      },
     );
   }
 
   Future getOrders(var cart_id) async {
     var token = await storage.read(key: 'shop_token');
     print(token);
-    http.Response response = await http.get(Uri.parse('$url/shop/orders/$cart_id'),
+    http.Response response = await http.get(
+      Uri.parse('$url/shop/orders/$cart_id'),
       headers: {"Authorization": 'Bearer $token'},
     );
     //print(response.body);
