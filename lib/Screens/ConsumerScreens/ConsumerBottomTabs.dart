@@ -16,20 +16,21 @@ class ConsumerBottomTabs extends StatefulWidget {
 
 class _ConsumerBottomTabsState extends State<ConsumerBottomTabs> {
   int _selectedIndex = 0;
-  CupertinoTabController _tabController;
+  final CupertinoTabController _controller = CupertinoTabController();
   final GlobalKey<NavigatorState> firstTabNavKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> secondTabNavKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> thirdTabNavKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> fourthTabNavKey = GlobalKey<NavigatorState>();
+  /*
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     //AddProduct(),
     Navigator(
       onGenerateRoute: (home) {
         Widget page = AddProduct();
-        if(home.name=='newProduct') page = ProductTile();
-        if(home.name=='home') page = AddProduct();
+        if (home.name == 'newProduct') page = ProductTile();
+        if (home.name == 'home') page = AddProduct();
         return MaterialPageRoute(builder: (_) => page);
       },
     ),
@@ -49,9 +50,9 @@ class _ConsumerBottomTabsState extends State<ConsumerBottomTabs> {
       _selectedIndex = index;
     });
   }
-
+*/
   GlobalKey<NavigatorState> currentNavigatorKey() {
-    switch (_tabController.index) {
+    switch (_controller.index) {
       case 0:
         return firstTabNavKey;
         break;
@@ -71,6 +72,7 @@ class _ConsumerBottomTabsState extends State<ConsumerBottomTabs> {
   @override
   void dispose() {
     // TODO: implement dispose
+    _controller.dispose();
     super.dispose();
   }
 
@@ -78,7 +80,6 @@ class _ConsumerBottomTabsState extends State<ConsumerBottomTabs> {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: CupertinoTabScaffold(
-          controller: _tabController,
           tabBar: CupertinoTabBar(
             backgroundColor: Colors.green,
             activeColor: Colors.white,
@@ -101,46 +102,44 @@ class _ConsumerBottomTabsState extends State<ConsumerBottomTabs> {
               ),
             ],
           ),
-          tabBuilder: (context,index) {
-            switch(index) {
+          controller: _controller,
+          tabBuilder: (context, int index) {
+            switch (index) {
               case 0:
                 return CupertinoTabView(
                     navigatorKey: firstTabNavKey,
                     builder: (context) {
-                      return CupertinoPageScaffold(
-                          child: NearbyShops()
-                      );
+                      return CupertinoPageScaffold(child: NearbyShops());
                     });
               case 1:
                 return CupertinoTabView(
                     navigatorKey: secondTabNavKey,
                     builder: (context) {
-                      return CupertinoPageScaffold(
-                          child: PreviousOrders()
-                      );
+                      return CupertinoPageScaffold(child: PreviousOrders());
                     });
               case 2:
                 return CupertinoTabView(
                     navigatorKey: thirdTabNavKey,
                     builder: (context) {
-                      return CupertinoPageScaffold(
-                          child: ConsumerProfile()
-                      );
+                      return CupertinoPageScaffold(child: ConsumerProfile());
                     });
-              default: return CupertinoTabView(
-                  navigatorKey: firstTabNavKey,
-                  builder: (context){
-                    return CupertinoPageScaffold(
-                        child: NearbyShops()
-                    );
-                  });
+              default:
+                return CupertinoTabView(
+                    navigatorKey: firstTabNavKey,
+                    builder: (context) {
+                      return CupertinoPageScaffold(child: NearbyShops());
+                    });
             }
-          }
-      ),
+          }),
       onWillPop: () async {
-        print("Back Pressed");
+        //print("Back Pressed");
         print(currentNavigatorKey().currentState);
+        print(currentNavigatorKey().currentState.maybePop());
+        print(_controller.index);
         return !await currentNavigatorKey().currentState.maybePop();
+        print(_controller.index);
+        //Navigator.pop(context);
+        //return false;
       },
     );
   }

@@ -37,9 +37,11 @@ class _AllAddressesState extends State<AllAddresses> {
     print(decodedToken);
     decodedToken['consumer_address'] =
         addresses[selected_index]['consumer_address'];
+    decodedToken['addressId'] = addresses[selected_index]['addressId'];
     print(decodedToken);
     var newAd = await convertNewAddressToJson(
-        addresses[selected_index]['consumer_address']);
+        addresses[selected_index]['consumer_address'],
+        addresses[selected_index]['addressId']);
     var data = await con.getTokenDetails(newAd);
     print(data);
     Map<String, dynamic> decodedToken2 = JwtDecoder.decode(data['token']);

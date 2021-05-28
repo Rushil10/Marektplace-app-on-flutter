@@ -143,6 +143,7 @@ class _BodyState extends State<Body> {
                     await storeToken(data['token']);
                   } else {
                     error = data['error'];
+                    return renderError(Icons.error, data['error']);
                     await storage.write(key: 'error', value: error);
                     print(error);
                   }

@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:grocy/Screens/ConsumerScreens/ConsumerLocation.dart';
+import 'package:grocy/Screens/ConsumerSignupDetails/ConsumerFirstLocation.dart';
 import 'package:grocy/Screens/signupFunctions.dart';
 import 'package:grocy/components/RoundedInputNumberField.dart';
 import 'package:grocy/components/rounded_button.dart';
@@ -32,11 +33,6 @@ class _ConsumerSignupState extends State<ConsumerSignup> {
   final storage = new FlutterSecureStorage();
   var name;
   var contact;
-  var flat;
-  var area;
-  var landmark;
-  var town;
-  var address;
   var data;
   var token;
   var error;
@@ -248,45 +244,10 @@ class _ConsumerSignupState extends State<ConsumerSignup> {
                       },
                     ),
                   ),
-                  Container(
-                    child: RoundedInputField(
-                      hintText: 'Flat, House no., Building',
-                      icon: Icons.home,
-                      onChanged: (value) {
-                        flat = value;
-                      },
-                    ),
-                  ),
-                  Container(
-                    child: RoundedInputField(
-                      hintText: 'Area, Colony, Street, Sector',
-                      icon: Icons.location_city,
-                      onChanged: (value) {
-                        area = value;
-                      },
-                    ),
-                  ),
-                  Container(
-                    child: RoundedInputField(
-                      hintText: 'Landmark',
-                      icon: Icons.location_on,
-                      onChanged: (value) {
-                        landmark = value;
-                      },
-                    ),
-                  ),
-                  Container(
-                    child: RoundedInputField(
-                      hintText: 'Town/City',
-                      icon: Icons.location_city_outlined,
-                      onChanged: (value) {
-                        town = value;
-                      },
-                    ),
-                  ),
                   RoundedButton(
-                    text: 'SIGNUP',
+                    text: 'NEXT',
                     press: () async {
+                      print(_image);
                       if (name == null || name.toString().isEmpty) {
                         return renderError(
                             Icons.person, 'Name cannot be empty !');
@@ -295,45 +256,49 @@ class _ConsumerSignupState extends State<ConsumerSignup> {
                         return renderError(
                             Icons.call, 'Contact cannot be empty !');
                       }
-                      if (flat == null || flat.toString().isEmpty) {
-                        return renderError(
-                            Icons.home, 'Enter Flat,House,Building Number !');
-                      }
-                      if (area == null || area.toString().isEmpty) {
-                        return renderError(
-                            Icons.location_city, 'Area must not be empty');
-                      }
-                      if (landmark == null || landmark.toString().isEmpty) {
-                        return renderError(
-                            Icons.location_on, 'Landmark must not be empty');
-                      }
-                      if (town == null || town.toString().isEmpty) {
-                        return renderError(Icons.location_city,
-                            'Town/city name must be given !');
-                      }
                       if (contact.toString().length > 10 ||
                           contact.toString().length < 7) {
                         return renderError(
                             Icons.call, 'Contact Number is Invalid !');
                       }
-                      var iname = getRandomString(8);
-                      final _storage =
-                          firebase_storage.FirebaseStorage.instance;
-                      var snapshot =
-                          await _storage.ref().child('$iname').putFile(_image);
-                      var downloadUrl = await snapshot.ref.getDownloadURL();
-                      print(downloadUrl);
-                      await setState(() {
-                        imageUrl = downloadUrl;
-                      });
-                      address =
-                          flat + ', ' + area + ', ' + landmark + ', ' + town;
+                      if (_image != null) {
+                        var iname = getRandomString(8);
+                        final _storage =
+                            firebase_storage.FirebaseStorage.instance;
+                        var snapshot = await _storage
+                            .ref()
+                            .child('$iname')
+                            .putFile(_image);
+                        var downloadUrl = await snapshot.ref.getDownloadURL();
+                        print(downloadUrl);
+                        await setState(() {
+                          imageUrl = downloadUrl;
+                        });
+                      } else {
+                        setState(() {
+                          imageUrl =
+                              'https://firebasestorage.googleapis.com/v0/b/grocy-9ba9a.appspot.com/o/user_sample.jpg?alt=media&token=84b86aef-1b18-438a-bce5-f7a2a752cbbd';
+                        });
+                      }
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => ConsumerFirstLocation(
+                                  email: widget.email,
+                                  password: widget.password,
+                                  imageUrl: imageUrl,
+                                  name: name,
+                                  contact: contact,
+                                )),
+                      );
+                      // address =
+                      //   flat + ', ' + area + ', ' + landmark + ', ' + town;
                       //print(address);
                       //var temp = jsonDecode(widget.userInfo);
                       //print(temp['email']);
-                      consumer = convertToJson(widget.email, widget.password,
-                          contact, address, name, imageUrl);
-                      var data = await funcs.signup(consumer);
+                      //consumer = convertToJson(widget.email, widget.password,
+                      // contact, address, name, imageUrl);
+                      //var data = await funcs.signup(consumer);
+                      /*
                       if (data['token'] != null) {
                         await storeToken(data['token']);
                       } else {
@@ -341,6 +306,7 @@ class _ConsumerSignupState extends State<ConsumerSignup> {
                         await storage.write(key: 'error', value: error);
                         print(error);
                       }
+                      */
                     },
                   )
                 ],

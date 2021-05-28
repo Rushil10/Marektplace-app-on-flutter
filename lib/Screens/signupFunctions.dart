@@ -14,9 +14,10 @@ String convertLatLongToJson(var latitude, var longitude) {
   return js;
 }
 
-String convertNewAddressToJson(var address) {
+String convertNewAddressToJson(var address, var addressId) {
   var res = {};
   res["consumer_address"] = address;
+  res["addressId"] = addressId;
   String js = json.encode(res);
   print(js);
   return js;
