@@ -13,20 +13,20 @@ class BottomTabs extends StatefulWidget {
 
 class _BottomTabsState extends State<BottomTabs> {
   int _selectedIndex = 0;
-  CupertinoTabController _tabController;
+  final CupertinoTabController _controller = CupertinoTabController();
   final GlobalKey<NavigatorState> firstTabNavKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> secondTabNavKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> thirdTabNavKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> fourthTabNavKey = GlobalKey<NavigatorState>();
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     //AddProduct(),
     Navigator(
       onGenerateRoute: (home) {
         Widget page = AddProduct();
-        if(home.name=='newProduct') page = ProductTile();
-        if(home.name=='home') page = AddProduct();
+        if (home.name == 'newProduct') page = ProductTile();
+        if (home.name == 'home') page = AddProduct();
         return MaterialPageRoute(builder: (_) => page);
       },
     ),
@@ -48,7 +48,7 @@ class _BottomTabsState extends State<BottomTabs> {
   }
 
   GlobalKey<NavigatorState> currentNavigatorKey() {
-    switch (_tabController.index) {
+    switch (_controller.index) {
       case 0:
         return firstTabNavKey;
         break;
@@ -75,7 +75,6 @@ class _BottomTabsState extends State<BottomTabs> {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: CupertinoTabScaffold(
-          controller: _tabController,
           tabBar: CupertinoTabBar(
             backgroundColor: Colors.green,
             activeColor: Colors.white,
@@ -103,50 +102,41 @@ class _BottomTabsState extends State<BottomTabs> {
               ),
             ],
           ),
-          tabBuilder: (context,index) {
-            switch(index) {
+          controller: _controller,
+          tabBuilder: (context, index) {
+            switch (index) {
               case 0:
                 return CupertinoTabView(
                     navigatorKey: firstTabNavKey,
                     builder: (context) {
-                      return CupertinoPageScaffold(
-                          child: AddProduct()
-                      );
+                      return CupertinoPageScaffold(child: AddProduct());
                     });
               case 1:
                 return CupertinoTabView(
                     navigatorKey: secondTabNavKey,
                     builder: (context) {
-                      return CupertinoPageScaffold(
-                          child: CurrentOrders()
-                      );
+                      return CupertinoPageScaffold(child: CurrentOrders());
                     });
               case 2:
                 return CupertinoTabView(
                     navigatorKey: thirdTabNavKey,
                     builder: (context) {
-                      return CupertinoPageScaffold(
-                          child: DeliveryTabs()
-                      );
+                      return CupertinoPageScaffold(child: DeliveryTabs());
                     });
               case 3:
                 return CupertinoTabView(
                     navigatorKey: fourthTabNavKey,
                     builder: (context) {
-                      return CupertinoPageScaffold(
-                          child: ShopOwnerProfile()
-                      );
+                      return CupertinoPageScaffold(child: ShopOwnerProfile());
                     });
-              default: return CupertinoTabView(
-                  navigatorKey: firstTabNavKey,
-                  builder: (context){
-                    return CupertinoPageScaffold(
-                        child: AddProduct()
-                    );
-                  });
+              default:
+                return CupertinoTabView(
+                    navigatorKey: firstTabNavKey,
+                    builder: (context) {
+                      return CupertinoPageScaffold(child: AddProduct());
+                    });
             }
-          }
-      ),
+          }),
       onWillPop: () async {
         print("Back Pressed");
         return !await currentNavigatorKey().currentState.maybePop();

@@ -5,10 +5,8 @@
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter2/flutter/.pub-cache/hosted/pub.dartlang.org/geolocator-6.2.1" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter2/flutter/.pub-cache/hosted/pub.dartlang.org/razorpay_flutter-1.2.5" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter2/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-2.0.1" />
-      <root url="file://$PROJECT_DIR$/../../../../../src/flutter2/flutter/.pub-cache/hosted/pub.dartlang.org/package_info-2.0.0" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter2/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-0.2.1+1" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter2/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_linux-0.0.1+4" />
-      <root url="file://$PROJECT_DIR$/../../../../../src/flutter2/flutter/.pub-cache/hosted/pub.dartlang.org/android_intent-2.0.0" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter2/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-5.0.1" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter2/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_secure_storage-4.1.0" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter2/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_macos-0.0.1+9" />
@@ -22,6 +20,8 @@
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter2/flutter/.pub-cache/hosted/pub.dartlang.org/fluttertoast-8.0.3" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter2/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.7.10" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter2/flutter/.pub-cache/hosted/pub.dartlang.org/geocoding-1.0.5" />
+      <root url="file://$PROJECT_DIR$/../../../../../src/flutter2/flutter/.pub-cache/hosted/pub.dartlang.org/android_intent-2.0.2" />
+      <root url="file://$PROJECT_DIR$/../../../../../src/flutter2/flutter/.pub-cache/hosted/pub.dartlang.org/package_info-2.0.2" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
