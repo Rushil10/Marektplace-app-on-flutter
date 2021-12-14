@@ -3,9 +3,9 @@
 A new Flutter application.
 
 ## About
-This is an app where sellers can add their products after egistering their shop by providing details.
+This is an app where sellers can add their products after registering their shop by providing details.
 
-The consumers can see al the shops registered near them and place their order after making payment.
+The consumers can see all the shops, their respective products registered near them and place their order after making payment.
 
 ## Tech Stack
 
