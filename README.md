@@ -1,16 +1,18 @@
-# grocy
+# Grocy
 
 A new Flutter application.
 
-## Getting Started
+## About
+This is an app where sellers can add their products after egistering their shop by providing details.
 
-This project is a starting point for a Flutter application.
+The consumers can see al the shops registered near them and place their order after making payment.
 
-A few resources to get you started if this is your first Flutter project:
+## Tech Stack
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+FrontEnd -> Flutter
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Backend -> Node, Express, MySQL, Fireabse (for storing images)
+
+Backend Repo Link (https://github.com/Rushil10/Grocy_Server)
+
+
